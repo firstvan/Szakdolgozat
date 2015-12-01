@@ -1,8 +1,8 @@
-@(title: String, user: String, message: String)
+@(user: String, message: String)
 
 @import helper._
 
-@main(title, 1, user) {
+@main("Bejelentkezés", 1, user) {
 @form(routes.Login.login, 'class -> "accountcontainer accountcontainerform", 'onsubmit -> "return check();"){
 <div class="input-group" style="margin: 2% auto;">
     <span class="glyphicon glyphicon-user input-group-addon" id="basic-addon1"></span>

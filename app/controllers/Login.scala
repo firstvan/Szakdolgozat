@@ -1,7 +1,5 @@
 package controllers
 
-import java.util
-
 import controllers.db.{User, UserManager}
 
 import play.api._
@@ -22,7 +20,14 @@ class Login extends Controller {
   def login = Action { implicit request =>
     loginForm.bindFromRequest.fold(
       formWithErrors => Redirect("Not succes"),
-      user => Redirect("mainpage")
+      user => {
+
+        if(checkPasswd(user._1, user._2)){
+          Redirect(routes.Main.index).withSession(Security.username -> user._1)
+        }else {
+          Ok(views.html.index("Vendég", "Hibás felhasználónév vagy jelszó!"))
+        }
+      }
     )
   }
 
@@ -33,14 +38,25 @@ class Login extends Controller {
     Ok("Succes")
   }
 
-  def checkPasswd = Action {
-    val usr = UserManager.getUserByUserName("admin1")
+  def checkPasswd(usr :String, passwd :String) : Boolean = {
+    val usr = UserManager.getUserByUserName(passwd)
 
-    if ("admin1".isBcrypted(usr.get.passwordHash)){
-      Ok("succes")
-    } else {
-      Ok("False")
+    if(usr.isEmpty) {
+      return false
     }
+    else {
+      if(passwd.isBcrypted(usr.get.passwordHash)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  def logout = Action {
+    Redirect(routes.Application.index).withNewSession.flashing(
+      "success" -> "You are now logged out."
+    )
   }
 
 }
