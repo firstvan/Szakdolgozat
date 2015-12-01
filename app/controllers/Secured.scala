@@ -1,6 +1,7 @@
 package controllers
 
-import controllers.db.{UserManager, User}
+import model.User
+import controllers.db.{UserDAO}
 import play.api.mvc._
 
 trait Secured {
@@ -16,7 +17,7 @@ trait Secured {
   }
 
   def withUser(f: User => Request[AnyContent] => Result) = withAuth { username => implicit request =>
-    UserManager.getUserByUserName(username).map { user =>
+    UserDAO.getUserByUserName(username).map { user =>
       f(user)(request)
     }.getOrElse(onUnauthorized(request))
   }

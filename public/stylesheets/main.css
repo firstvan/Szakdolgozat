@@ -8,7 +8,7 @@
 }
 
 body {
-  background: #F5F6CE;
+  background: #FFFFFF;
 }
 
 .accountcontainer > .loginbutton {
@@ -34,4 +34,19 @@ body {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
+}
+
+.maincontainer {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.basicsetting {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.theadinverse{
+  background-color: #333333;
+  color: #FFFFFF;
 }

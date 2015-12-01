@@ -1,6 +1,7 @@
 package controllers
 
-import controllers.db.{User, UserManager}
+import controllers.db.UserDAO
+import model.User
 
 import play.api._
 import play.api.data._
@@ -32,14 +33,14 @@ class Login extends Controller {
   }
 
   def register = Action {
-    val usr = new User("3", "admin1", "admin1".bcrypt, "Admin 1", "Administrator")
+    val usr = new User("4", "uk1", "uk123".bcrypt, "Üzlet kötő 1", "Manager")
 
-    UserManager.insertUser(usr)
+    UserDAO.insertUser(usr)
     Ok("Succes")
   }
 
-  def checkPasswd(usr :String, passwd :String) : Boolean = {
-    val usr = UserManager.getUserByUserName(passwd)
+  def checkPasswd(usrName :String, passwd :String) : Boolean = {
+    val usr = UserDAO.getUserByUserName(usrName)
 
     if(usr.isEmpty) {
       return false

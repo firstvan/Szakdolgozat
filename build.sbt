@@ -10,7 +10,7 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   specs2 % Test,
-  "org.mongodb" %% "casbah" % "3.0.0",
+  "org.mongodb" %% "casbah" % "2.8.2",
   "com.github.t3hnar" % "scala-bcrypt_2.10" % "2.1"
 )
 
