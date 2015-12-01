@@ -10,7 +10,8 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   specs2 % Test,
-  "org.mongodb" %% "casbah" % "3.0.0"
+  "org.mongodb" %% "casbah" % "3.0.0",
+  "com.github.t3hnar" % "scala-bcrypt_2.10" % "2.1"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"

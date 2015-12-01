@@ -2,13 +2,13 @@ package controllers
 
 import java.util
 
-import controllers.db.UserManager
+import controllers.db.{User, UserManager}
 
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
-
+import com.github.t3hnar.bcrypt._
 
 class Login extends Controller {
 
@@ -27,12 +27,20 @@ class Login extends Controller {
   }
 
   def register = Action {
-    val usr = UserManager.getUserByUserName("admin")
-    if(usr == None){
-      Ok("None")
+    val usr = new User("3", "admin1", "admin1".bcrypt, "Admin 1", "Administrator")
+
+    UserManager.insertUser(usr)
+    Ok("Succes")
+  }
+
+  def checkPasswd = Action {
+    val usr = UserManager.getUserByUserName("admin1")
+
+    if ("admin1".isBcrypted(usr.get.passwordHash)){
+      Ok("succes")
+    } else {
+      Ok("False")
     }
-    val str = usr.get.username + " " + usr.get.fullname
-    Ok(str)
   }
 
 }
