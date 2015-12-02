@@ -11,13 +11,27 @@
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-left">
-            <li><a class="noneclickable titlepage" href="">Felhasználó: @user</a></li>
+            <li>
+                <a class="titlepage" href="main">Felhasználó: @user</a>
+            </li>
+            @if(menuBarType == 2 || menuBarType == 4) {
+                <li><a href="addorder">Új rendelés</a></li>
+            }
+
+            @if(menuBarType == 3) {
+             <li class="active noneclickable"><a href="addorder">Új rendelés</a></li>
+            }
         </ul>
         <ul class="nav navbar-nav navbar-right">
             @if(menuBarType == 1){
-              <li><a class="noneclickable" style="margin-right: 5px;" href="">Kijelentkezés</a></li>
+            <li><a class="noneclickable" style="margin-right: 5px;" href="">Kijelentkezés</a></li>
             } else {
-              <li><a href="logout" style="margin-right: 5px;">Kijelentkezés</a></li>
+                @menuBarType match {
+                    case 3 => {<li><a href="main">Vissza</a></li>}
+                    case 4 => {<li><a href="addorder">Vissza</a></li>}
+                    case _ => {}
+                }
+                <li><a href="logout" style="margin-right: 5px;">Kijelentkezés</a></li>
             }
         </ul>
     </div>

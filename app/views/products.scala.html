@@ -1,0 +1,35 @@
+@import model.Product
+@(user: String, custName: String, products: List[Product], listedElement :Int, actualPage :Int, maxPage :Int, elementSize :Int)
+
+@import scala.Int; var start=0; var end=1; var counter=1; var pageNo=0
+
+@main(custName +" rendelése", 4, user) {
+<div class="basicsetting">
+    <div class="page-header">
+        <h1>Termékek hozzáadása</h1>
+    </div>
+
+    <div class="list-group" style="float: left; margin: 2% auto;">
+        @{counter = ((actualPage - 1) * listedElement) + 1}
+        @for(p <- products){
+        <div class="input-group" style="margin: 0 auto;">
+               <span class="input-group-addon">
+                   <input type="checkbox">
+               </span>
+            <a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal">
+                <h4><b>@counter.</b> @p.name</h4>
+                <p>Készlet: @p.stock</p>
+                <p>Ár: @p.ar ft</p>
+            </a>
+            @{counter=counter+1}
+        </div>
+        @if(products.last != p) {
+        <hr style="border-top: 1px solid #000000;" />
+        }
+        }
+
+        @productpaging(listedElement, actualPage, maxPage, elementSize)
+    </div>
+
+</div>
+}

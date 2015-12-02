@@ -1,7 +1,5 @@
 package controllers.db
 
-
-import com.mongodb.BasicDBList
 import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject}
 import com.mongodb.casbah.Imports._
 import model.{Item, Registration}
@@ -26,13 +24,23 @@ object RegistrationDAO extends IRegistrationDAO{
       returnList.append(getRegistration(x))
     }
 
-    println(returnList.toList)
-
     return Some(returnList.toList)
-
   }
 
-  override def getRegistrationByUser(userId: Int, opened: Int): Option[List[Registration]] = ???
+  override def getRegistrationByUser(userId: Int, opened: Int): Option[List[Registration]] = {
+    val itemListObj = collection.find(MongoDBObject("user_no" -> userId, "opened" -> opened))
+
+    if(itemListObj.isEmpty)
+      return None
+
+    val returnList = ListBuffer[Registration]()
+
+    for (x <- itemListObj){
+      returnList.append(getRegistration(x))
+    }
+
+    return Some(returnList.toList)
+  }
 
 
   private def getRegistration(item: RegistrationDAO.this.collection.T) : Registration = {
@@ -60,13 +68,9 @@ object RegistrationDAO extends IRegistrationDAO{
       ordered.append(it)
     }
 
-    println(ordered.toList)
-
-
-    //Kijavítani...
-    return new Registration(item.get("_id").toString().toInt, item.get("user_no").toString().toInt,
-      item.get("cust_no").toString().toInt, List(), item.get("total").toString().toInt,
-      item.get("opened").toString().toInt, indate, outdate)
+    return new Registration(item.getAs[Int]("_id").get, item.getAs[Int]("user_no").get,
+      item.getAs[Int]("cust_no").get, ordered.toList, item.getAs[Int]("total").get,
+      item.getAs[Int]("opened").get, indate, outdate)
   }
 
 }

@@ -5,4 +5,5 @@ import model.Product
 trait IProductDAO {
   def getProductByItemNo(itemNo: String) : Option[Product]
 
+  def getElementByName(name: String) : List[Product]
 }

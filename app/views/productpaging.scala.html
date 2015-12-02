@@ -1,0 +1,89 @@
+@(listedElement :Int, actualPage :Int, maxPage :Int, elementSize :Int)
+
+@import scala.Int; var start=0; var end=1; var pageNo=0
+
+<nav style="text-align: center;">
+    <ul class="pagination">
+
+        <li>
+            @if(actualPage == 1){
+            <a href="" aria-label="Previous" style="color: gray; pointer-events: none; cursor: default;">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            } else {
+
+            @if(actualPage - 10 < 0 ){
+            <a href="paging?page=1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            } else {
+            <a href="paging?page=@{actualPage - 10}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            }
+            }
+        </li>
+
+        @{start = actualPage}
+        @{end = actualPage + maxPage}
+
+        @if(elementSize%listedElement == 0) {
+        @{pageNo = elementSize/listedElement }
+        } else {
+        @{pageNo = elementSize/listedElement + 1 }
+        }
+
+        @if(actualPage >= 5) {
+        @{start = actualPage - 4}
+        @{end = start + maxPage}
+        } else {
+        @{start = 1}
+        @{end = start + maxPage}
+        }
+
+        @if(actualPage > pageNo-5) {
+        @{end = actualPage + pageNo-actualPage + 1}
+        @{start = end - maxPage}
+        }
+
+        @if(start < 1){
+        @{start = 1}
+        }
+
+        @if(end > pageNo){
+        @{end = pageNo}
+        }
+
+        @if(end < start){
+        @{end = start + 1}
+        }
+
+        @for(i <- List.range(start, end+1)){
+        @if(i == actualPage){
+        <li class="active"><a href="#page=i">@i</a></li>
+        } else {
+        <li><a href="paging?page=@i">@i</a></li>
+        }
+        }
+
+        <li>
+            @if(actualPage == pageNo){
+            <a href="#" aria-label="Next" style="color: gray; pointer-events: none; cursor: default;">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            } else {
+
+            @if(actualPage + 10 > pageNo){
+            <a href="paging?page=@pageNo" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            } else {
+            <a href="paging?page=@{actualPage + 10}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            }
+            }
+        </li>
+
+    </ul>
+</nav>
