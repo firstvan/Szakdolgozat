@@ -6,6 +6,13 @@
     <ul class="pagination">
 
         <li>
+
+            @if(elementSize == 0){
+            <a href="" class="noneclickable" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            } else {
+
             @if(actualPage == 1){
             <a href="" aria-label="Previous" style="color: gray; pointer-events: none; cursor: default;">
                 <span aria-hidden="true">&laquo;</span>
@@ -20,6 +27,7 @@
             <a href="paging?page=@{actualPage - 10}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
+            }
             }
             }
         </li>
@@ -58,6 +66,10 @@
         @{end = start + 1}
         }
 
+        @if(elementSize == 0){
+            <li><a class="noneclickable" href="">1</a></li>
+        } else {
+
         @for(i <- List.range(start, end+1)){
         @if(i == actualPage){
         <li class="active"><a href="#page=i">@i</a></li>
@@ -65,8 +77,15 @@
         <li><a href="paging?page=@i">@i</a></li>
         }
         }
+        }
 
         <li>
+
+            @if(elementSize == 0){
+                <a href="" class="noneclickable" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            } else {
             @if(actualPage == pageNo){
             <a href="#" aria-label="Next" style="color: gray; pointer-events: none; cursor: default;">
                 <span aria-hidden="true">&raquo;</span>
@@ -81,6 +100,7 @@
             <a href="paging?page=@{actualPage + 10}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
+            }
             }
             }
         </li>
