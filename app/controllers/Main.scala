@@ -8,11 +8,13 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
 
-import controllers.db.{ProductDAO, CustomerDAO, RegistrationDAO}
+import controllers.db.{ActualOrderDAO, ProductDAO, CustomerDAO, RegistrationDAO}
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
 object Main {
+
+
   def tableLook(li: List[Registration]) : List[TableLook] ={
     val map = HashMap[Int, String]()
     val returnList = ListBuffer[TableLook]()
@@ -71,6 +73,7 @@ class Main extends Controller with Secured{
       formWithErrors => BadRequest("Formális hiba"),
       customer => {
         val name = customer._1.replace(" ", "%")
+        ActualOrderDAO.addNewOrder(username, customer._1 , customer._2)
         Redirect(routes.Main.products())
           .withCookies(new Cookie("customername", name))
       }
@@ -109,7 +112,7 @@ class Main extends Controller with Secured{
       counter += 1
     }
 
-    println(p2.toList.length)
+    //println(p2.toList.length)
     return (p2.toList, products.size)
   }
 
