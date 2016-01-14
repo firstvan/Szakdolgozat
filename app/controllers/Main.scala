@@ -125,6 +125,29 @@ class Main extends Controller with Secured{
     val size = request.cookies.get("listedSize").get.value.toInt
     val products = getList(sname, size, page)
 
-    Ok(views.html.products(username, name.get.value.replace("%", "asd"), products._1, size, page, DefaultValues.MaxPageNumber, products._2))
+    Ok(views.html.products(username, name.get.value.replace("%", " "), products._1, size, page, DefaultValues.MaxPageNumber, products._2))
+  }
+
+  val searchForm = Form(
+    mapping(
+      "name" -> text
+    ) (SearchName.apply) (SearchName.unapply)
+  )
+
+  def search = withAuth { username => implicit request =>
+    searchForm.bindFromRequest.fold(
+      formWithError => Redirect("Not succes"),
+      name => {
+        val name1 = request.cookies.get("customername")
+
+        if(name1 isEmpty)
+        {
+          BadRequest("Illetéktelen hozzáférés")
+        }
+        val size = request.cookies.get("listedSize").get.value.toInt
+        val products = getList(name.name, size)
+        Ok(views.html.products(username, name1.get.value.replace("%", " "),  products._1, size, DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2)).withCookies(new Cookie("searched", name.name))
+      }
+    )
   }
 }
