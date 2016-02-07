@@ -6,6 +6,13 @@ db.getCollection("customers").ensureIndex({
   
 ]);
 
+/** ordered_products indexes **/
+db.getCollection("ordered_products").ensureIndex({
+  "_id": NumberInt(1)
+},[
+  
+]);
+
 /** orders indexes **/
 db.getCollection("orders").ensureIndex({
   "_id": NumberInt(1)
@@ -119,266 +126,219 @@ db.getCollection("customers").insert({
   "p_type": "Aracely"
 });
 
+/** ordered_products records **/
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(0),
+  "order_id": NumberInt(5),
+  "product_number": "11902121",
+  "ordered_piece": NumberInt(1),
+  "ordered_price": NumberInt(753),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(1),
+  "order_id": NumberInt(5),
+  "product_number": "19984955",
+  "ordered_piece": NumberInt(12),
+  "ordered_price": NumberInt(2589),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(2),
+  "order_id": NumberInt(4),
+  "product_number": "11902121",
+  "ordered_piece": NumberInt(10),
+  "ordered_price": NumberInt(753),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(3),
+  "order_id": NumberInt(7),
+  "product_number": "11902121",
+  "ordered_piece": NumberInt(10),
+  "ordered_price": NumberInt(753),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(4),
+  "order_id": NumberInt(7),
+  "product_number": "31010100",
+  "ordered_piece": NumberInt(22),
+  "ordered_price": NumberInt(773),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(5),
+  "order_id": NumberInt(7),
+  "product_number": "53000788",
+  "ordered_piece": NumberInt(17),
+  "ordered_price": NumberInt(3860),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(6),
+  "order_id": NumberInt(8),
+  "product_number": "11902121",
+  "ordered_piece": NumberInt(71),
+  "ordered_price": NumberInt(753),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(7),
+  "order_id": NumberInt(8),
+  "product_number": "19984955",
+  "ordered_piece": NumberInt(10),
+  "ordered_price": NumberInt(2589),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(8),
+  "order_id": NumberInt(9),
+  "product_number": "11902121",
+  "ordered_piece": NumberInt(61),
+  "ordered_price": NumberInt(753),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(9),
+  "order_id": NumberInt(9),
+  "product_number": "19984955",
+  "ordered_piece": NumberInt(31),
+  "ordered_price": NumberInt(2589),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(10),
+  "order_id": NumberInt(9),
+  "product_number": "19984954",
+  "ordered_piece": NumberInt(20),
+  "ordered_price": NumberInt(1627),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(11),
+  "order_id": NumberInt(10),
+  "product_number": "19984955",
+  "ordered_piece": NumberInt(10),
+  "ordered_price": NumberInt(2589),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(12),
+  "order_id": NumberInt(11),
+  "product_number": "19984955",
+  "ordered_piece": NumberInt(10),
+  "ordered_price": NumberInt(2589),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(13),
+  "order_id": NumberInt(11),
+  "product_number": "11902121",
+  "ordered_piece": NumberInt(11),
+  "ordered_price": NumberInt(753),
+  "deliveried": NumberInt(0)
+});
+db.getCollection("ordered_products").insert({
+  "_id": NumberInt(14),
+  "order_id": NumberInt(12),
+  "product_number": "19984954",
+  "ordered_piece": NumberInt(7),
+  "ordered_price": NumberInt(1627),
+  "deliveried": NumberInt(0)
+});
+
 /** orders records **/
 db.getCollection("orders").insert({
+  "_id": NumberInt(0),
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(8),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
+});
+db.getCollection("orders").insert({
   "_id": NumberInt(1),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(2),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(9),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "16-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(2),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(3),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(5),
+  "customer": NumberInt(1),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(3),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(1),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(5),
+  "customer": NumberInt(3),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(4),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(2),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(9),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(5),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(3),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(6),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(6),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(1),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(7),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(7),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(2),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(4),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(8),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(3),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(7),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(9),
-  "opened": NumberInt(1),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(1),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(6),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
 });
 db.getCollection("orders").insert({
   "_id": NumberInt(10),
-  "opened": NumberInt(0),
-  "shippingDate": "2015-12-11 12:10:00",
-  "products": [
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "11049757",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31008701",
-      "price": NumberInt(551)
-    },
-    {
-      "ordered": NumberInt(10),
-      "productnumber": "31000553",
-      "price": NumberInt(551)
-    }
-  ],
-  "cust_no": NumberInt(2),
-  "incomeDate": "2015-12-01 12:10:00",
-  "user_no": NumberInt(4),
-  "total": NumberInt(15000)
+  "sales_man_id": NumberInt(5),
+  "customer": NumberInt(6),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "27-01-2016"
+});
+db.getCollection("orders").insert({
+  "_id": NumberInt(11),
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(9),
+  "date_of_take": "15-01-2016",
+  "delivery_date": "15-01-2016"
+});
+db.getCollection("orders").insert({
+  "_id": NumberInt(12),
+  "sales_man_id": NumberInt(4),
+  "customer": NumberInt(6),
+  "date_of_take": "07-02-2016",
+  "delivery_date": "24-02-2016"
 });
 
 /** products records **/
@@ -118831,33 +118791,60 @@ db.getCollection("products").insert({
   "rabat": "nincs"
 });
 
+/** system.indexes records **/
+db.getCollection("system.indexes").insert({
+  "v": NumberInt(1),
+  "key": {
+    "_id": NumberInt(1)
+  },
+  "name": "_id_",
+  "ns": "uk.users"
+});
+db.getCollection("system.indexes").insert({
+  "v": NumberInt(1),
+  "key": {
+    "_id": NumberInt(1)
+  },
+  "name": "_id_",
+  "ns": "uk.products"
+});
+db.getCollection("system.indexes").insert({
+  "v": NumberInt(1),
+  "key": {
+    "_id": NumberInt(1)
+  },
+  "name": "_id_",
+  "ns": "uk.orders"
+});
+db.getCollection("system.indexes").insert({
+  "v": NumberInt(1),
+  "key": {
+    "_id": NumberInt(1)
+  },
+  "name": "_id_",
+  "ns": "uk.customers"
+});
+db.getCollection("system.indexes").insert({
+  "v": NumberInt(1),
+  "key": {
+    "_id": NumberInt(1)
+  },
+  "name": "_id_",
+  "ns": "uk.ordered_products"
+});
+
 /** users records **/
 db.getCollection("users").insert({
-  "_id": ObjectId("565c667f59eb867d4384ba8e"),
-  "username": "admin",
-  "password": "",
-  "fullname": "Admin",
-  "accountType": "Manager"
-});
-db.getCollection("users").insert({
-  "_id": ObjectId("565d835a76f6404682ee7172"),
-  "username": "firstvan",
-  "passwordHash": "$2a$10$47oMS6.8EFANsb3hdEzdEu5egILAp7LiabQlajG6jTFGgELHF8f0O",
-  "id": "",
-  "fullname": "Orban Istvan",
-  "accountType": "Manager"
-});
-db.getCollection("users").insert({
-  "_id": "3",
-  "username": "admin1",
-  "passwordHash": "$2a$10$TrH38O6oMMYbdtrLilK5yOV318tI7LdLZiTJbtQRRTrHjPy2dDyTC",
-  "fullname": "Admin 1",
-  "accountType": "Administrator"
-});
-db.getCollection("users").insert({
-  "_id": "4",
+  "_id": NumberInt(4),
   "username": "uk1",
-  "passwordHash": "$2a$10$Q3XSYQaAWmss/o2gYfykHOZrOH0MDjfAmMlZRIIMiwP3nZC95ReW.",
+  "passwordHash": "$2a$10$xYm8whsmPzMAOQFm.Y3Tlu5S2PWLzRPT6NyrmmyNCTX7q9vt0iTsC",
   "fullname": "Üzlet kötő 1",
+  "accountType": "Manager"
+});
+db.getCollection("users").insert({
+  "_id": NumberInt(5),
+  "username": "uk2",
+  "passwordHash": "$2a$10$AYcOG.7pppzJACrlN8fboO4bbte6zwEXXVBKG9yF2NR0HMqsQXEaS",
+  "fullname": "Üzlet kötő 2",
   "accountType": "Manager"
 });
