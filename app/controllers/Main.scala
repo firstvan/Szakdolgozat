@@ -14,7 +14,6 @@ import scala.collection.mutable.ListBuffer
 
 object Main {
 
-
   def tableLook(li: List[Registration]) : List[TableLook] ={
     val map = HashMap[Int, String]()
     val returnList = ListBuffer[TableLook]()
@@ -68,14 +67,16 @@ class Main extends Controller with Secured{
     Ok(views.html.addorder(username, custnames))
   }
 
+
   def add = withAuth { username => implicit request =>
     newOrder.bindFromRequest.fold(
       formWithErrors => BadRequest("Formális hiba"),
       customer => {
         val name = customer._1.replace(" ", "%")
-        ActualOrderDAO.addNewOrder(username, customer._1 , customer._2)
+        val orderID = ActualOrderDAO.addNewOrder(username, customer._1 , customer._2)
+        //println(Main.orderID)
         Redirect(routes.Main.products())
-          .withCookies(new Cookie("customername", name))
+          .withCookies(new Cookie("customername", name), new Cookie("orderid", orderID.toString()))
       }
     )
   }
@@ -88,10 +89,13 @@ class Main extends Controller with Secured{
     {
       BadRequest("Illetéktelen hozzáférés")
     }
-    else
+    else {
+      val orderedMap = ActualOrderDAO.getOrderedProducts(request.cookies.get("orderid").get.value.toInt)
+
       Ok(views.html.products(username, name.get.value.replace("%", " "), products._1, DefaultValues.Size,
-        DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2)).withCookies(new Cookie("searched", DefaultValues.Searched),
-          new Cookie("listedSize", DefaultValues.Size.toString()))
+        DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2, orderedMap)).withCookies(new Cookie("searched", DefaultValues.Searched),
+        new Cookie("listedSize", DefaultValues.Size.toString()))
+    }
   }
 
   def getList(name :String = DefaultValues.Searched, size :Int = DefaultValues.Size, start :Int = DefaultValues.ActualPage) :
@@ -128,7 +132,9 @@ class Main extends Controller with Secured{
     val size = request.cookies.get("listedSize").get.value.toInt
     val products = getList(sname, size, page)
 
-    Ok(views.html.products(username, name.get.value.replace("%", " "), products._1, size, page, DefaultValues.MaxPageNumber, products._2))
+    val orderedMap = ActualOrderDAO.getOrderedProducts(request.cookies.get("orderid").get.value.toInt)
+
+    Ok(views.html.products(username, name.get.value.replace("%", " "), products._1, size, page, DefaultValues.MaxPageNumber, products._2, orderedMap))
   }
 
   val searchForm = Form(
@@ -149,7 +155,10 @@ class Main extends Controller with Secured{
         }
         val size = request.cookies.get("listedSize").get.value.toInt
         val products = getList(name.name, size)
-        Ok(views.html.products(username, name1.get.value.replace("%", " "),  products._1, size, DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2)).withCookies(new Cookie("searched", name.name))
+
+        val orderedMap = ActualOrderDAO.getOrderedProducts(request.cookies.get("orderid").get.value.toInt)
+
+        Ok(views.html.products(username, name1.get.value.replace("%", " "),  products._1, size, DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2, orderedMap)).withCookies(new Cookie("searched", name.name))
       }
     )
   }

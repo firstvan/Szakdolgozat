@@ -22,7 +22,7 @@ object DBFactory {
     }
 
     val result = mongoObejct.result()
-    println(result.toString())
+    println(result.toString() + " " + result.getClass())
 
     return result
   }

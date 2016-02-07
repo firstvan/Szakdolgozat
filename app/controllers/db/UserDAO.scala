@@ -1,6 +1,7 @@
 package controllers.db
 
-import com.mongodb.casbah.commons.MongoDBObject
+//import com.mongodb.casbah.commons.MongoDBObject
+import com.mongodb.casbah.Imports._
 import model.User
 
 
@@ -15,7 +16,7 @@ object UserDAO extends IUserDAO{
 
     val usr = usrObj.get
 
-    val returnUser = new User(usr.get("_id").toString(), name, usr.get("passwordHash").toString(),
+    val returnUser = new User(usr.as[Int]("_id"), name, usr.get("passwordHash").toString(),
       usr.get("fullname").toString(), usr.get("accountType").toString())
 
 

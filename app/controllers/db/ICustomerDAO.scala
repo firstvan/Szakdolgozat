@@ -8,4 +8,6 @@ trait ICustomerDAO {
   def getCustomerNames() : List[String]
 
   def getLowerCustomerNames(): List[String]
+
+  def getCustomerByName(name: String) : Option[Customer]
 }

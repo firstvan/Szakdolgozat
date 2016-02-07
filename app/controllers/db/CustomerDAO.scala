@@ -48,4 +48,14 @@ object CustomerDAO extends ICustomerDAO{
       item.getAs[String]("billing_name").get, item.getAs[String]("billing_address").get,
       item.getAs[String]("p_type").get, item.getAs[String]("lowerName").get)
   }
+
+  override def getCustomerByName(name: String): Option[Customer] = {
+    val cust = collection.findOne(MongoDBObject("name" -> name))
+
+    if(cust.isEmpty){
+      return None
+    }
+
+    return Some(getCustomer(cust.get))
+  }
 }

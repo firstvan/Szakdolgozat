@@ -33,7 +33,7 @@ class Login extends Controller {
   }
 
   def register = Action {
-    val usr = new User("4", "uk1", "uk123".bcrypt, "Üzlet kötő 1", "Manager")
+    val usr = new User(5, "uk2", "uk123".bcrypt, "Üzlet kötő 2", "Manager")
 
     UserDAO.insertUser(usr)
     Ok("Succes")
