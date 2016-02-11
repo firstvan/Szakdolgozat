@@ -1,9 +1,9 @@
 package controllers.db
 
-import model.Registration
+import model.Orders
 
 trait IRegistrationDAO {
-  def getRegistrationByCustomerId(id: Int): Option[List[Registration]]
+  def getRegistrationByCustomerId(id: Int): Option[List[Orders]]
 
-  def getRegistrationByUser(userId: Int, opened :Int=3): Option[List[Registration]]
+  def getRegistrationByUser(user_id: Int, opened :Int): Option[List[Orders]]
 }

@@ -24,6 +24,7 @@ class Login extends Controller {
       user => {
 
         if(checkPasswd(user._1, user._2)){
+          Main.user = UserDAO.getUserByUserName(user._1).get
           Redirect(routes.Main.index).withSession(Security.username -> user._1)
         }else {
           Ok(views.html.index("Vendég", "Hibás felhasználónév vagy jelszó!"))

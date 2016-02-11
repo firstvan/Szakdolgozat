@@ -1,32 +1,35 @@
 package controllers
 
 
-import model.{TableLook, Registration, Product}
+import controllers.db._
+import model.OrderState
+import model._
 import org.joda.time.format.DateTimeFormat
 import play.api._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
 
-import controllers.db.{ActualOrderDAO, ProductDAO, CustomerDAO, RegistrationDAO}
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ListBuffer
 
 object Main {
 
-  def tableLook(li: List[Registration]) : List[TableLook] ={
+  var user: User = null
+
+  def tableLook(li: List[Orders]) : List[TableLook] ={
     val map = HashMap[Int, String]()
     val returnList = ListBuffer[TableLook]()
     for(i <- li){
       var name = ""
-      if(map.contains(i.cust_no)){
-        name = map.get(i.cust_no).get
+      if(map.contains(i.customer)){
+        name = map.get(i.customer).get
       } else {
-        name = CustomerDAO.getCustomerById(i.cust_no).get.name
-        map += ((i.cust_no, name))
+        name = CustomerDAO.getCustomerById(i.customer).get.name
+        map += ((i.customer, name))
       }
       val f = DateTimeFormat.forPattern("yyyy.MM.dd")
-      val date  = f.print(i.incomeDate)
+      val date  = f.print(i.date_of_take)
       returnList.append(new TableLook(i._id, name, date, i.total))
     }
 
@@ -53,7 +56,11 @@ class Main extends Controller with Secured{
   )
 
   def index = withAuth { username => implicit request =>
-    val l = RegistrationDAO.getRegistrationByUser(4, 1)
+    if(Main.user == null){
+      Main.user =  UserDAO.getUserByUserName(username).get
+    }
+
+    val l = RegistrationDAO.getRegistrationByUser(Main.user._id, OrderState.Open)
     if(l.isDefined) {
       val li = Main.tableLook(l.get)
       Ok(views.html.mainpage(username, li))
@@ -116,7 +123,6 @@ class Main extends Controller with Secured{
       counter += 1
     }
 
-    //println(p2.toList.length)
     return (p2.toList, products.size)
   }
 

@@ -1,7 +1,7 @@
 package controllers.db
 
 import com.mongodb.casbah.Imports._
-import model.OrderedItem
+import model.{OrderState, OrderedItem}
 
 
 object ActualOrderDAO extends IActualOrderDAO{
@@ -21,6 +21,8 @@ object ActualOrderDAO extends IActualOrderDAO{
     */
   override def addOrder(orderNumber: Int, productNumber: String, ordered: Int, actualPrice: Int): Unit = {
     val item = collectionItems.findOne(MongoDBObject("order_id" -> orderNumber, "product_number" -> productNumber))
+    val order = collectionOrder.findOne(MongoDBObject("_id" -> orderNumber))
+    var total: Int = 0
 
     if(item.isEmpty) {
 
@@ -34,12 +36,26 @@ object ActualOrderDAO extends IActualOrderDAO{
       )
 
       collectionItems.insert(newProduct)
+      total = order.get.getAs[Int]("total").get + (ordered * actualPrice)
+
     } else {
 
       val neworder = ordered
 
+      val old_piece = item.get.getAs[Int]("ordered_piece").get
+      val old_price = item.get.getAs[Int]("ordered_price").get
+
       collectionItems.update(MongoDBObject("_id" -> item.get.get("_id")), $set ("ordered_piece" -> neworder))
+      collectionItems.update(MongoDBObject("_id" -> item.get.get("_id")), $set ("ordered_price" -> actualPrice))
+
+
+      total = order.get.getAs[Int]("total").get - (old_piece * old_price) + (ordered * actualPrice)
+
     }
+
+    println(total)
+    collectionOrder.update(MongoDBObject("_id" -> orderNumber), $set ("total" -> total))
+
   }
 
   /**
@@ -56,7 +72,9 @@ object ActualOrderDAO extends IActualOrderDAO{
       "sales_man_id" -> usr,
       "customer" -> cust,
       "date_of_take" -> format.format(new java.util.Date()),
-      "delivery_date" -> delivery
+      "delivery_date" -> delivery,
+      "opened" -> OrderState.Open,
+      "total" -> 0
     )
 
     collectionOrder.insert(newOrder)

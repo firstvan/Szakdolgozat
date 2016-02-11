@@ -2,7 +2,7 @@ package controllers.db
 
 import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject}
 import com.mongodb.casbah.Imports._
-import model.{Item, Registration}
+import model.{Orders, Item, Registration}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
@@ -10,15 +10,16 @@ import scala.collection.mutable.ListBuffer
 
 object RegistrationDAO extends IRegistrationDAO{
   val collection = DBFactory.getCollection("orders")
+  val prod_collection = DBFactory.getCollection("ordered_products")
 
-  override def getRegistrationByCustomerId(id: Int): Option[List[Registration]] = {
+  override def getRegistrationByCustomerId(id: Int): Option[List[Orders]] = {
 
     val itemListObj = collection.find(MongoDBObject("cust_no" -> id))
 
     if(itemListObj.isEmpty)
       return None
 
-    val returnList = ListBuffer[Registration]()
+    val returnList = ListBuffer[Orders]()
 
     for (x <- itemListObj) {
       returnList.append(getRegistration(x))
@@ -27,13 +28,13 @@ object RegistrationDAO extends IRegistrationDAO{
     return Some(returnList.toList)
   }
 
-  override def getRegistrationByUser(userId: Int, opened: Int): Option[List[Registration]] = {
-    val itemListObj = collection.find(MongoDBObject("user_no" -> userId, "opened" -> opened))
+  override def getRegistrationByUser(user_id: Int, opened: Int): Option[List[Orders]] = {
+    val itemListObj = collection.find(MongoDBObject("sales_man_id" -> user_id, "opened" -> opened))
 
     if(itemListObj.isEmpty)
       return None
 
-    val returnList = ListBuffer[Registration]()
+    val returnList = ListBuffer[Orders]()
 
     for (x <- itemListObj){
       returnList.append(getRegistration(x))
@@ -43,34 +44,14 @@ object RegistrationDAO extends IRegistrationDAO{
   }
 
 
-  private def getRegistration(item: RegistrationDAO.this.collection.T) : Registration = {
+  private def getRegistration(item: RegistrationDAO.this.collection.T) : Orders = {
 
-    val format = "yyyy-MM-dd HH:mm:ss"
-    val indate = DateTime.parse(item.get("incomeDate").toString(), DateTimeFormat.forPattern(format))
-    val outdate = DateTime.parse(item.get("shippingDate").toString(), DateTimeFormat.forPattern(format))
+    val format = "dd-MM-yyyy"
+    val indate = DateTime.parse(item.get("date_of_take").toString(), DateTimeFormat.forPattern(format))
+    val outdate = DateTime.parse(item.get("delivery_date").toString(), DateTimeFormat.forPattern(format))
 
-    val listOfOrdered = item.getAs[MongoDBList]("products").get
-
-    val ordered = ListBuffer[Item]()
-
-    for (item_ <- listOfOrdered){
-      val myString = item_.toString()
-      val i = myString.substring(1, myString.length - 1)
-        .split(",")
-        .map(_.split(":"))
-        .map { case Array(k, v) => (k.substring(1, k.length-1), v.substring(1, v.length-1))}
-        .toMap
-
-      val a = i.get("\"ordered\"").get.replaceAll("\"", "").toInt
-      val b = i.get("\"price\"").get.replaceAll("\"", "").toInt
-
-      val it = new Item(i.get("\"productnumber\"").get.replaceAll("\"", ""), a, b)
-      ordered.append(it)
-    }
-
-    return new Registration(item.getAs[Int]("_id").get, item.getAs[Int]("user_no").get,
-      item.getAs[Int]("cust_no").get, ordered.toList, item.getAs[Int]("total").get,
-      item.getAs[Int]("opened").get, indate, outdate)
+    return new Orders(item.getAs[Int]("_id").get, item.getAs[Int]("sales_man_id").get,
+     item.getAs[Int]("customer").get, indate, outdate, item.getAs[Int]("opened").get, item.getAs[Int]("total").get)
   }
 
 }
