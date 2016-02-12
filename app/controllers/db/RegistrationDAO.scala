@@ -54,4 +54,10 @@ object RegistrationDAO extends IRegistrationDAO{
      item.getAs[Int]("customer").get, indate, outdate, item.getAs[Int]("opened").get, item.getAs[Int]("total").get)
   }
 
+  override def getOrderById(id: Int): Orders = {
+
+    val order = collection.findOne(MongoDBObject("_id" -> id)).get
+
+    return getRegistration(order)
+  }
 }

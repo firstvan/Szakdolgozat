@@ -10,6 +10,7 @@
             <thead class="theadinverse">
             <tr>
                 <th>#</th>
+                <th>Rendelés id</th>
                 <th>Név</th>
                 <th>Dátum</th>
                 <th>Összeg</th>
@@ -17,8 +18,9 @@
             </thead>
             <tbody>
             @for(i <- 0 to li.length - 1){
-                <tr>
+                <tr class="clickable-row" data-href="orders?id=@li(i)._id">
                     <th scope="row">@(i+1)</th>
+                    <td>@li(i)._id</td>
                     <td>@li(i).name</td>
                     <td>@li(i).date</td>
                     <td>@li(i).price ft</td>

@@ -13,7 +13,7 @@ GET     /products                   controllers.Main.products
 GET     /paging                     controllers.Main.paging(page :Int)
 POST    /search                     controllers.Main.search
 GET     /additem                    controllers.ProductManage.addProduct(itemNo :String, piece :Int, price :Int)
-
+GET     /orders                     controllers.OpenOrders.getInfromation(id: Int)
 GET     /register                   controllers.Login.register
 
 # Map static resources from the /public folder to the /assets URL path

@@ -1,0 +1,75 @@
+@import model.Orders
+@(user: String, order: Orders, customer_name: String, date: String, delivery: String)
+
+@main(customer_name + " rendelése", 2, user){
+    <div id="base_inform_open" class="add-item-container basicsetting base_inform_open">
+      <div id="base_inform_header" class="base_inform_header">
+          <h3 class="disable-select nomargin">Alap információk</h3>
+      </div>
+      <div id="base_inform_content" class="base_inform_content">
+          <table class="inform_table">
+              <tr>
+                  <td style="width: 50%">
+                      <b>Rendelésszám:</b>
+                  </td>
+                  <td style="width: 50%">
+                      #@{order._id}
+                  </td>
+              </tr>
+              <tr>
+                  <td style="width: 50%">
+                      <b>Vásárló név:</b>
+                  </td>
+                  <td style="width: 50%">
+                      @{customer_name}
+                  </td>
+              </tr>
+              <tr>
+                  <td style="width: 50%">
+                      <b>Kapcsolattartó: </b>
+                  </td>
+                  <td style="width: 50%">
+                      @{user}
+                  </td>
+              </tr>
+              <tr>
+                  <td style="width: 50%">
+                      <b>Rendelés dátuma: </b>
+                  </td>
+                  <td style="width: 50%">
+                      <span class="glyphicon glyphicon-time" id="basic-addon1">
+                        <input name="date_of_take" id="date_of_take" type="text" value="@{date}" style="text-align: center;"/>
+                      </span>
+                  </td>
+              </tr>
+              <tr>
+                  <td style="width: 50%">
+                      <b>Kiszállítás:</b>
+                  </td>
+                  <td style="width: 50%">
+                      <span class="glyphicon glyphicon-time" id="basic-addon2">
+                          <input name="delivery_date" id="delivery_date" type="text" value="@{delivery}" style="text-align: center;"/>
+                      </span>
+                  </td>
+              </tr>
+              <tr>
+                  <td style="width: 50%">
+                      <b>Végösszeg: </b>
+                  </td>
+                  <td style="width: 50%">
+                  @{order.total} ft
+                  </td>
+              </tr>
+          </table>
+      </div>
+    </div>
+
+    <br/>
+
+    <div id="orderd_products" class="add-item-container basicsetting base_inform_open">
+        <div id="orderd_products_header" class="base_inform_header">
+            <h3 class="disable-select nomargin">Rendelt Termékek</h3>
+        </div>
+        <div id="orderd_products_content" class="base_inform_content">Hello</div>
+    <div>
+}
