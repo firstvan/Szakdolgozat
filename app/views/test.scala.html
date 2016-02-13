@@ -1,0 +1,45 @@
+@(user: String, customer_name: String)(implicit req: RequestHeader)
+
+@main("Pagination", 2, user){
+    <script src="@routes.Assets.versioned("javascripts/pagination.js")" ></script>
+
+    <div class="basicsetting">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Keresés</div>
+        <div class="panel-body">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr >
+                        <td>
+                            <div id="search_id" class="input-group" style="margin-bottom: 2%">
+                                <input id="search_text" type="text" class="form-control" placeholder="Termék neve...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" onclick="search()">Keresés</button>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="btn-group" style="float: middle;">
+                                <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    5 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="sizedList?iNo=5">5</a></li>
+                                    <li><a href="sizedList?iNo=10">10</a></li>
+                                    <li><a href="sizedList?iNo=50">50</a></li>
+                                    <li><a href="sizedList?iNo=100">100</a></li>
+                                </ul>-->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="product_page">
+    </div>
+    </div>
+}

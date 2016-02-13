@@ -1,7 +1,13 @@
 @import model.Orders
-@(user: String, order: Orders, customer_name: String, date: String, delivery: String)
+@(user: String, order: Orders, customer_name: String, date: String, delivery: String)(implicit req: RequestHeader)
 
 @main(customer_name + " rendelése", 2, user){
+    <script>
+            $(document).ready(function(){
+                index_page(true);
+            });
+    </script>
+    <script src="@routes.Assets.versioned("javascripts/open_inform.js")" ></script>
     <div id="base_inform_open" class="add-item-container basicsetting base_inform_open">
       <div id="base_inform_header" class="base_inform_header">
           <h3 class="disable-select nomargin">Alap információk</h3>
@@ -70,6 +76,58 @@
         <div id="orderd_products_header" class="base_inform_header">
             <h3 class="disable-select nomargin">Rendelt Termékek</h3>
         </div>
-        <div id="orderd_products_content" class="base_inform_content">Hello</div>
+
+        <div id="orderd_products_content" class="base_inform_content">
+            <br/>
+            <script src="@routes.Assets.versioned("javascripts/pagination.js")" ></script>
+            <div class="basicsetting">
+                <div class="panel panel-primary">
+                    <div class="panel-heading" style="display: list-item;">
+                        <div style="display: inline; float: left;">
+                            Keresés
+                        </div>
+                        <div style="display: inline; float: right;">
+                            Csak a rendelt termékek:
+                            <input id="onlyOrderd" type="checkbox" />
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table style="width: 100%;">
+                            <tbody>
+                                <tr >
+                                    <td>
+                                        <div id="search_id" class="input-group" style="margin-bottom: 2%">
+                                            <input id="search_text" type="text" class="form-control" placeholder="Termék neve...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" type="button" onclick="search()">Keresés</button>
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="btn-group" style="float: middle;">
+                                                <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    5 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a href="sizedList?iNo=5">5</a></li>
+                                    <li><a href="sizedList?iNo=10">10</a></li>
+                                    <li><a href="sizedList?iNo=50">50</a></li>
+                                    <li><a href="sizedList?iNo=100">100</a></li>
+                                </ul>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="product_page">
+                </div>
+            </div>
+
+        </div>
     <div>
 }

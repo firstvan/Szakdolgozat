@@ -1,0 +1,88 @@
+@import model.Product
+@(products: List[Product], orderedMap :Map[String, Int], actualPage: Int, listedElement: Int, maxPage: Int, elementSize: Int)
+
+@import scala.Int; var counter=1
+@import helper._
+
+<div>
+ @productpaging(listedElement, actualPage, maxPage, elementSize)
+
+<div class="list-group" style="float: left; margin: 2% auto;">
+        @{counter = ((actualPage - 1) * listedElement) + 1}
+            @for(p <- products){
+            <div class="input-group add-item-container" style="margin: 0 auto;">
+                <span class="input-group-addon">
+                        <!--<input type="checkbox">-->
+                </span>
+                <div class="list-group-item product-list" data-toggle="modal" data-target="#@{p.productnumber}">
+                    <div class="add-list-item">
+                        <h4><b>@counter.</b> @p.name</h4>
+                        <p>Készlet: @p.stock</p>
+                        <p>Ár: @p.price ft</p>
+                    </div>
+                    <div class="add-list-piece">
+                        <div id="piece-@{p.productnumber}">
+                        @if(orderedMap.contains(p.productnumber)){
+                            @orderedMap(p.productnumber)
+                        }
+                        </div>
+                    </div>
+                </div>
+                @{counter=counter+1}
+            </div>
+                <!-- Modal -->
+            <div class="modal fade" id="@{p.productnumber}" tabindex="-1" role="dialog" aria-labelledby="item">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h2 class="modal-title itemModalTitle" id="item">
+                            @{p.name}
+                            </h2>
+                        </div>
+                        <div class="modal-body" style="font-weight: normal;">
+                            <table class="itemDescriptionTable">
+                                <tr>
+                                    <td>Termék szám:</td> <td>@{p.productnumber}</td>
+                                </tr>
+                                <tr>
+                                    <td>Vonalkód:</td><td>@{p.ean}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ár:</td> <td>@{p.price} FT</td>
+                                </tr>
+                                <tr>
+                                    <td>Raktáron:</td> <td>@{p.stock} db</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                            <!-- Modal Footer -->
+                        <div class="modal-footer">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-group addButton">
+                                    <label  class="col-sm-4 control-label"
+                                    for="darab@{p.productnumber}">Rendelendő darab</label>
+                                    <div class="col-sm-5">
+                                        <input type="number" class="form-control"
+                                        id="darab@{p.productnumber}" placeholder="Darabszám"/>
+                                    </div>
+                                    <button type="button" class="btn btn-primary" onclick="addorder(@{p.productnumber}, @{p.price})">
+                                            Hozzáadás
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if(products.last != p) {
+                <hr style="border-top: 1px solid #000000;" />
+            }
+            }
+
+    </div>
+    @productpaging(listedElement, actualPage, maxPage, elementSize)
+
+</div>

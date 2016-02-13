@@ -10,11 +10,12 @@ GET     /logout                     controllers.Login.logout
 GET     /addorder                   controllers.Main.addorder
 POST    /addorder                   controllers.Main.add
 GET     /products                   controllers.Main.products
-GET     /paging                     controllers.Main.paging(page :Int)
-POST    /search                     controllers.Main.search
 GET     /additem                    controllers.ProductManage.addProduct(itemNo :String, piece :Int, price :Int)
 GET     /orders                     controllers.OpenOrders.getInfromation(id: Int)
 GET     /register                   controllers.Login.register
+GET     /pagination                 controllers.Pagination.index(orderd: Boolean)
+
+GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

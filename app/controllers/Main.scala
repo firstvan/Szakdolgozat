@@ -37,15 +37,6 @@ object Main {
   }
 }
 
-case class SearchName(name: String)
-
-object DefaultValues {
-  val Searched :String = ""
-  val Size :Int = 5
-  val ActualPage :Int = 1
-  val MaxPageNumber :Int = 8
-}
-
 class Main extends Controller with Secured{
 
   val newOrder = Form(
@@ -79,93 +70,19 @@ class Main extends Controller with Secured{
     newOrder.bindFromRequest.fold(
       formWithErrors => BadRequest("Formális hiba"),
       customer => {
-        val name = customer._1.replace(" ", "%")
         val orderID = ActualOrderDAO.addNewOrder(username, customer._1 , customer._2)
-        //println(Main.orderID)
-        Redirect(routes.Main.products())
-          .withCookies(new Cookie("customername", name), new Cookie("orderid", orderID.toString()))
+
+        Redirect(routes.Main.products).withCookies(new Cookie("customername", customer._1.replace(" ", "%"))
+          , new Cookie("orderid", orderID.toString()))
       }
     )
   }
 
-  def products = withAuth {username => implicit request =>
-    val products = getList(DefaultValues.Searched, DefaultValues.Size)
-    val name = request.cookies.get("customername")
+  def products = withAuth { username => implicit request =>
+    val cust_name = request.cookies.get("customername").get.value
+    val orderID = request.cookies.get("orderid").get.value.toInt
 
-    if(name isEmpty)
-    {
-      BadRequest("Illetéktelen hozzáférés")
-    }
-    else {
-      val orderedMap = ActualOrderDAO.getOrderedProducts(request.cookies.get("orderid").get.value.toInt)
-
-      Ok(views.html.products(username, name.get.value.replace("%", " "), products._1, DefaultValues.Size,
-        DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2, orderedMap)).withCookies(new Cookie("searched", DefaultValues.Searched),
-        new Cookie("listedSize", DefaultValues.Size.toString()))
-    }
+    Ok(views.html.products(username, cust_name.replace("%", " ")))
   }
 
-  def getList(name :String = DefaultValues.Searched, size :Int = DefaultValues.Size, start :Int = DefaultValues.ActualPage) :
-  (List[Product], Int) = {
-    var p2 = new ListBuffer[model.Product]()
-
-    val products = ProductDAO.getElementByName(name)
-
-    var counter = (start - 1) * size
-    var max = counter + size
-
-    if(max > products.size){
-      max = products.size
-    }
-
-    while(counter < max ){
-      p2 += products(counter)
-      counter += 1
-    }
-
-    return (p2.toList, products.size)
-  }
-
-  def paging(page :Int) = withAuth {username => implicit request =>
-    val name = request.cookies.get("customername")
-
-    if(name isEmpty)
-    {
-      BadRequest("Illetéktelen hozzáférés")
-    }
-
-    val sname = request.cookies.get("searched").get.value
-    val size = request.cookies.get("listedSize").get.value.toInt
-    val products = getList(sname, size, page)
-
-    val orderedMap = ActualOrderDAO.getOrderedProducts(request.cookies.get("orderid").get.value.toInt)
-
-    Ok(views.html.products(username, name.get.value.replace("%", " "), products._1, size, page, DefaultValues.MaxPageNumber, products._2, orderedMap))
-  }
-
-  val searchForm = Form(
-    mapping(
-      "name" -> text
-    ) (SearchName.apply) (SearchName.unapply)
-  )
-
-  def search = withAuth { username => implicit request =>
-    searchForm.bindFromRequest.fold(
-      formWithError => Redirect("Not succes"),
-      name => {
-        val name1 = request.cookies.get("customername")
-
-        if(name1 isEmpty)
-        {
-          BadRequest("Illetéktelen hozzáférés")
-        }
-        val size = request.cookies.get("listedSize").get.value.toInt
-        val products = getList(name.name, size)
-
-        val orderedMap = ActualOrderDAO.getOrderedProducts(request.cookies.get("orderid").get.value.toInt)
-
-        Ok(views.html.products(username, name1.get.value.replace("%", " "),  products._1, size, DefaultValues.ActualPage, DefaultValues.MaxPageNumber, products._2, orderedMap)).withCookies(new Cookie("searched", name.name))
-      }
-    )
-  }
 }

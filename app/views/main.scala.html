@@ -1,8 +1,9 @@
-@(title: String, menuType: Int, user: String)(content: Html)
+@(title: String, menuType: Int, user: String)(content: Html)(implicit req: RequestHeader)
 
 <!DOCTYPE html>
 
 <html lang="en">
+    <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>@title</title>
@@ -20,6 +21,7 @@
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.css">
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <script src="@routes.Assets.versioned("javascripts/main.js")" ></script>

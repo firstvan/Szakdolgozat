@@ -8,23 +8,23 @@
         <li>
 
             @if(elementSize == 0){
-            <a href="" class="noneclickable" aria-label="Previous">
+            <a href="#" class="noneclickable" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             } else {
 
             @if(actualPage == 1){
-            <a href="" aria-label="Previous" style="color: gray; pointer-events: none; cursor: default;">
+            <a href="#" aria-label="Previous" style="color: gray; pointer-events: none; cursor: default;">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             } else {
 
             @if(actualPage - 10 < 0 ){
-            <a href="paging?page=1" aria-label="Previous">
+            <a href="#" onclick="paging(1)" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             } else {
-            <a href="paging?page=@{actualPage - 10}" aria-label="Previous">
+            <a href="#" onclick="paging(@{actualPage - 10})" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             }
@@ -67,14 +67,14 @@
         }
 
         @if(elementSize == 0){
-            <li><a class="noneclickable" href="">1</a></li>
+            <li><a class="noneclickable" href="#">1</a></li>
         } else {
 
         @for(i <- List.range(start, end+1)){
         @if(i == actualPage){
-        <li class="active"><a href="#page=i">@i</a></li>
+        <li class="active"><a href="#" onclick="paging(@i)">@i</a></li>
         } else {
-        <li><a href="paging?page=@i">@i</a></li>
+        <li><a href="#" onclick="paging(@i)">@i</a></li>
         }
         }
         }
@@ -82,7 +82,7 @@
         <li>
 
             @if(elementSize == 0){
-                <a href="" class="noneclickable" aria-label="Next">
+                <a href="#" class="noneclickable" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             } else {
@@ -93,11 +93,11 @@
             } else {
 
             @if(actualPage + 10 > pageNo){
-            <a href="paging?page=@pageNo" aria-label="Next">
+            <a href="#" onclick="paging(@{pageNo})" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
             } else {
-            <a href="paging?page=@{actualPage + 10}" aria-label="Next">
+            <a href="#" onclick="paging(@{actualPage + 10})" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
             }

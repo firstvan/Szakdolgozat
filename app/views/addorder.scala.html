@@ -1,14 +1,15 @@
-@(user: String, liCustName: List[String])
+@(user: String, liCustName: List[String])(implicit req: RequestHeader)
 
 @import helper._
 
 @main("Új rendelés", 3, user) {
+    <script src="@routes.Assets.versioned("javascripts/addorder.js")" ></script>
 <div class="basicsetting">
     <div class="page-header">
         <h1>Rendelés alapadatok</h1>
     </div>
 
-    @form(routes.Main.add, 'onsubmit -> "return validate();"){
+    @form(routes.Main.add, 'onsubmit -> "return validate();", 'onclick -> "clearCookies();"){
         <table class="table" style="width: 100%;">
             <tbody>
                 <tr>

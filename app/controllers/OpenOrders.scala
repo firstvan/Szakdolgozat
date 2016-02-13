@@ -2,7 +2,8 @@ package controllers
 
 import controllers.db.{CustomerDAO, RegistrationDAO}
 import org.joda.time.format.DateTimeFormat
-import play.api.mvc.Controller
+import play.api.mvc.{Cookie, Controller}
+
 
 class OpenOrders extends Controller with Secured{
 
@@ -12,6 +13,6 @@ class OpenOrders extends Controller with Secured{
     val f = DateTimeFormat.forPattern("yyyy.MM.dd")
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
-    Ok(views.html.openinform(username, order, cust.get.name, date, delevery))
+    Ok(views.html.openinform(username, order, cust.get.name, date, delevery)).withCookies(new Cookie("orderid", id.toString()))
   }
 }

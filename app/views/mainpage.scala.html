@@ -1,5 +1,5 @@
 @import model.TableLook
-@(user: String, li: List[TableLook])
+@(user: String, li: List[TableLook])(implicit req: RequestHeader)
 
 @main("Főoldal", 2, user) {
 <div class="basicsetting">
