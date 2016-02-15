@@ -1,9 +1,12 @@
 $(document).ready(function(){
     $("#onlyOrderd").change(function(){
         if($(this).is(":checked")){
+            $.cookie("actual_page", 1);
+            $.cookie("search_item_name", "");
             index_page(true);
         }
         else{
+            $.cookie("actual_page", 1);
             index_page(false);
         }
     });
@@ -11,8 +14,7 @@ $(document).ready(function(){
 
 var index_page = function(orderd) {
     $.get("/pagination?orderd=" + orderd, function(data){
-        $("#product_page").empty();
-        $("#product_page").append(data);
+        $("#product_page").empty().append(data);
     });
 };
 
