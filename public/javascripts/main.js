@@ -33,13 +33,5 @@ function validate(){
       }
 }
 
-jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        $.cookie("actual_page", "1");
-        $.cookie("search_item_name", "");
-        window.document.location = $(this).data("href");
-    });
-
-});
 
 

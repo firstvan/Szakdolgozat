@@ -9,16 +9,19 @@
 
 <div class="list-group" style="float: left; margin: 2% auto;">
         @{counter = ((actualPage - 1) * listedElement) + 1}
+            <label id="p_size" style="display: none">@{products.size}</label>
             @for(p <- products){
-            <div class="input-group add-item-container" style="margin: 0 auto;">
+            <div class="input-group add-item-container" style="margin: 0 auto; text-align: left; padding-bottom: 1px;">
                 <span class="input-group-addon">
                         <!--<input type="checkbox">-->
                 </span>
+
                 <div class="list-group-item product-list" data-toggle="modal" data-target="#@{p.productnumber}">
                     <div class="add-list-item">
                         <h4><b>@counter.</b> @p.name</h4>
                         <p>Készlet: @p.stock</p>
                         <p>Ár: @p.price ft</p>
+
                     </div>
                     <div class="add-list-piece">
                         <div id="piece-@{p.productnumber}">
@@ -27,6 +30,19 @@
                         }
                         </div>
                     </div>
+                </div>
+                <div id="container_@{p.productnumber}" >
+                @if(orderedMap.contains(p.productnumber)){
+                    <a id="id_@{p.productnumber}" onclick="show_delete_dialog(@{p.productnumber})">
+                      <span class="glyphicon glyphicon-remove" style="color: red;" ></span> Törlés
+                    </a>
+                }
+                </div>
+                <div id="dialog_@{p.productnumber}" title="Figyelem!" style="display: none;">
+                        Biztosan törli?
+                    <br/>
+                    <br/>
+
                 </div>
                 @{counter=counter+1}
             </div>

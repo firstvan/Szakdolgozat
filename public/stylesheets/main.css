@@ -130,3 +130,12 @@ body {
     padding-top: 0.5rem;
     padding-bottom: 0.5em;
 }
+
+.ui-dialog-titlebar {
+    background:red;
+}
+
+.leftbutton {
+    position: absolute;
+    left: 10px;
+}

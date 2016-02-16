@@ -16,33 +16,33 @@ class Pagination extends Controller with Secured {
   def index(orderd: Boolean) = withAuth { username => implicit request =>
     val actual_page_cookie = request.cookies.get("actual_page")
     var actual_page = 1
-    if (actual_page_cookie != None) {
+    if (actual_page_cookie.isDefined) {
       actual_page = actual_page_cookie.get.value.toInt
     }
 
 
     val name_cookie = request.cookies.get("search_item_name")
     var name = ""
-    if (name_cookie != None) {
+    if (name_cookie.isDefined) {
       name = name_cookie.get.value
     }
 
-    val size_cookie = request.cookies.get("size")
+    val size_cookie = request.cookies.get("list_size")
     var size = 5
-    if (size_cookie != None) {
+    if (size_cookie.isDefined) {
       size = size_cookie.get.value.toInt
     }
 
     val max_page_number_cookie = request.cookies.get("maxpagenumber")
     var max_page_number = 8
-    if (max_page_number_cookie != None) {
+    if (max_page_number_cookie.isDefined) {
       max_page_number = max_page_number_cookie.get.value.toInt
     }
 
     var order_id = 0
     val order_id_cookie = request.cookies.get("orderid")
 
-    if (order_id_cookie != None) {
+    if (order_id_cookie.isDefined) {
       order_id = order_id_cookie.get.value.toInt
     }
 
@@ -108,10 +108,22 @@ class Pagination extends Controller with Secured {
     val map = ActualOrderDAO.getOrderedProducts(order_id)
     for(o <- orderd){
       if(map.contains(o.productnumber)){
-        p2 += o;
+        p2 += o
       }
     }
 
-    return p2.toList;
+    return p2.toList
+  }
+
+  def deleteItem(prodNo: String) = withAuth{username=> implicit request =>
+    var order_id = 0
+    val order_id_cookie = request.cookies.get("orderid")
+
+    if (order_id_cookie.isDefined) {
+      order_id = order_id_cookie.get.value.toInt
+    }
+
+    val succes = ActualOrderDAO.deleteItem(order_id, prodNo)
+    Ok(succes.toString)
   }
 }

@@ -53,7 +53,6 @@ object ActualOrderDAO extends IActualOrderDAO{
 
     }
 
-    println(total)
     collectionOrder.update(MongoDBObject("_id" -> orderNumber), $set ("total" -> total))
 
   }
@@ -125,5 +124,56 @@ object ActualOrderDAO extends IActualOrderDAO{
       item.getAs[Int]("ordered_price").get,
       item.getAs[Int]("deliveried").get
     )
+  }
+
+  /**
+    * Delete a specify item from order list.
+    *
+    * @param prodNo product number
+    * @return delete was success.
+    */
+  override def deleteItem(orderid: Int, prodNo: String): Int = {
+
+    val query = MongoDBObject("order_id" -> orderid, "product_number" -> prodNo)
+
+    val item = collectionItems.findOne(query)
+
+    val order = collectionOrder.findOne(MongoDBObject("_id" -> orderid))
+
+    val old_piece = item.get.getAs[Int]("ordered_piece").get
+    val old_price = item.get.getAs[Int]("ordered_price").get
+
+    val total = order.get.getAs[Int]("total").get - (old_piece * old_price)
+
+    collectionOrder.update(MongoDBObject("_id" -> orderid), $set ("total" -> total))
+
+    val remove = collectionItems.findAndRemove(query)
+
+    if(remove.isEmpty)
+      1
+    else
+      0
+  }
+
+  /**
+    * Delete order and orderd products by id
+    *
+    * @param orderid order id
+    * @return 1 if success
+    */
+  override def deleteOrder(orderid: Int): Int = {
+    var query = MongoDBObject("_id" -> orderid)
+
+    val remove = collectionOrder.findAndRemove(query)
+
+    if(remove.isDefined){
+      query = MongoDBObject("order_id" -> orderid)
+      collectionItems.remove(query)
+
+      0
+    } else{
+      1
+    }
+
   }
 }

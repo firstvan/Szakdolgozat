@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.db.{CustomerDAO, RegistrationDAO}
+import controllers.db.{ActualOrderDAO, CustomerDAO, RegistrationDAO}
 import org.joda.time.format.DateTimeFormat
 import play.api.mvc.{Cookie, Controller}
 
@@ -14,5 +14,10 @@ class OpenOrders extends Controller with Secured{
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
     Ok(views.html.openinform(username, order, cust.get.name, date, delevery)).withCookies(new Cookie("orderid", id.toString()))
+  }
+
+  def deleteOrder(id: Int) = withAuth { username => implicit request =>
+    ActualOrderDAO.deleteOrder(id)
+    Ok("1")
   }
 }
