@@ -176,4 +176,41 @@ object ActualOrderDAO extends IActualOrderDAO{
     }
 
   }
+
+  /**
+    * Return the total of order by order id.
+    *
+    * @param orderid
+    * @return total of order
+    */
+  override def getTotal(orderid: Int): Int = {
+    val query = MongoDBObject("_id" -> orderid)
+
+    val get = collectionOrder.findOne(query).get
+
+    return get.getAs[Int]("total").get
+  }
+
+  /**
+    * Update delevery time.
+    *
+    * @param orderid id of order
+    * @param time    time to update
+    * @return 0 if success
+    */
+  override def updateTime(orderid: Int, time: String): Int = {
+    val query = MongoDBObject("_id" -> orderid)
+
+    val dates = time.split("-")
+
+    val formattedTime = dates(2) + "-" + dates(1) + "-" + dates(0)
+
+    val res = collectionOrder.findAndModify(query, $set("delivery_date" -> formattedTime))
+
+    if(res.isDefined){
+      0
+    } else {
+      1
+    }
+  }
 }

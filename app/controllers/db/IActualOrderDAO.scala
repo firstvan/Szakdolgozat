@@ -31,4 +31,19 @@ trait IActualOrderDAO {
     * @return 1 if success
     */
   def deleteOrder(orderid: Int):Int
+
+  /**
+    * Return the total of order by order id.
+    * @param orderid
+    * @return total of order
+    */
+  def getTotal(orderid: Int): Int
+
+  /**
+    * Update delevery time.
+    * @param orderid id of order
+    * @param time time to update
+    * @return 0 if success
+    */
+  def updateTime(orderid: Int, time: String): Int
 }

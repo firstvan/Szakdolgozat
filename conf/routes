@@ -16,6 +16,8 @@ GET     /register                   controllers.Login.register
 GET     /pagination                 controllers.Pagination.index(orderd: Boolean)
 GET     /deleteItem                 controllers.Pagination.deleteItem(prodNo: String)
 GET     /deleteOrder                controllers.OpenOrders.deleteOrder(id: Int)
+GET     /gettotal                   controllers.OpenOrders.getTotal
+GET     /updatetime                 controllers.OpenOrders.updateTime(time: String)
 
 GET     /test                       controllers.Pagination.test
 

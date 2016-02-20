@@ -5,12 +5,11 @@ import controllers.db._
 import model.OrderState
 import model._
 import org.joda.time.format.DateTimeFormat
-import play.api._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.mvc._
 
-import scala.collection.mutable.HashMap
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
 object Main {
@@ -18,7 +17,7 @@ object Main {
   var user: User = null
 
   def tableLook(li: List[Orders]) : List[TableLook] ={
-    val map = HashMap[Int, String]()
+    val map = mutable.HashMap[Int, String]()
     val returnList = ListBuffer[TableLook]()
     for(i <- li){
       var name = ""
@@ -33,7 +32,7 @@ object Main {
       returnList.append(new TableLook(i._id, name, date, i.total))
     }
 
-    return returnList.toList
+    returnList.toList
   }
 }
 
@@ -73,14 +72,13 @@ class Main extends Controller with Secured{
         val orderID = ActualOrderDAO.addNewOrder(username, customer._1 , customer._2)
 
         Redirect(routes.Main.products).withCookies(new Cookie("customername", customer._1.replace(" ", "%"))
-          , new Cookie("orderid", orderID.toString()))
+          , new Cookie("orderid", orderID.toString))
       }
     )
   }
 
   def products = withAuth { username => implicit request =>
     val cust_name = request.cookies.get("customername").get.value
-    val orderID = request.cookies.get("orderid").get.value.toInt
 
     Ok(views.html.products(username, cust_name.replace("%", " ")))
   }

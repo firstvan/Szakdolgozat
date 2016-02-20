@@ -12,7 +12,7 @@
       <div id="base_inform_header" class="base_inform_header">
           <h3 class="disable-select nomargin">Alap információk</h3>
       </div>
-      <div id="base_inform_content" class="base_inform_content">
+      <div id="base_inform_content" >
           <table class="inform_table">
               <tr>
                   <td style="width: 50%">
@@ -56,13 +56,14 @@
                       <span class="glyphicon glyphicon-time" id="basic-addon2">
                           <input name="delivery_date" id="delivery_date" type="text" value="@{delivery}" style="text-align: center;"/>
                       </span>
+                      <button id="delevery_save" type="button" class="btn btn-default" disabled="true" onclick="saveDate();">Mentés</button>
                   </td>
               </tr>
               <tr>
                   <td style="width: 50%">
                       <b>Végösszeg: </b>
                   </td>
-                  <td style="width: 50%">
+                  <td id="total" style="width: 50%">
                   @{order.total} ft
                   </td>
               </tr>

@@ -81,7 +81,7 @@ class Pagination extends Controller with Secured {
       counter += 1
     }
 
-    return (p2.toList, products.size)
+    (p2.toList, products.size)
   }
 
   def getListOrderd(name:String, size: Int, start: Int, order_id: Int): (List[Product], Int)  ={
@@ -100,7 +100,7 @@ class Pagination extends Controller with Secured {
       counter += 1
     }
 
-    return (p2.toList, products.size)
+    (p2.toList, products.size)
   }
 
   def getOrderdList(orderd: List[Product], order_id: Int) : List[Product] = {
@@ -112,7 +112,7 @@ class Pagination extends Controller with Secured {
       }
     }
 
-    return p2.toList
+    p2.toList
   }
 
   def deleteItem(prodNo: String) = withAuth{username=> implicit request =>
