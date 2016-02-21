@@ -50,13 +50,17 @@ class Main extends Controller with Secured{
       Main.user =  UserDAO.getUserByUserName(username).get
     }
 
-    val l = RegistrationDAO.getRegistrationByUser(Main.user._id, OrderState.Open)
-    if(l.isDefined) {
-      val li = Main.tableLook(l.get)
-      Ok(views.html.mainpage(username, li))
+    if(Main.user.accountType.equals("admin")){
+      Ok(views.html.mainAdmin(username))
+    } else {
+      val l = RegistrationDAO.getRegistrationByUser(Main.user._id, OrderState.Open)
+      if (l.isDefined) {
+        val li = Main.tableLook(l.get)
+        Ok(views.html.mainpage(username, li))
+      }
+      else
+        Ok(views.html.mainpage(username, List[TableLook]()))
     }
-    else
-      Ok(views.html.mainpage(username, List[TableLook]()))
   }
 
   def addorder = withAuth { username => implicit request =>
@@ -83,4 +87,13 @@ class Main extends Controller with Secured{
     Ok(views.html.products(username, cust_name.replace("%", " ")))
   }
 
+  def adminIndex = withAuth { username => implicit request =>
+    val l = RegistrationDAO.getRegistrationByUser(0, OrderState.Open)
+    if (l.isDefined) {
+      val li = Main.tableLook(l.get)
+      Ok(views.html.adminTable(li))
+    }
+    else
+      Ok(views.html.adminTable(List[TableLook]()))
+  }
 }

@@ -1,0 +1,47 @@
+@import model.Product
+@(p: Product, db: Int)
+
+
+<div class="modal fade" id="modal_@{p.productnumber}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title itemModalTitle">
+                @{p.name}
+                </h2>
+            </div>
+            <div class="modal-body">
+                <table class="itemDescriptionTable">
+                    <tr>
+                        <td>Termék szám:</td> <td>@{p.productnumber}</td>
+                    </tr>
+                    <tr>
+                        <td>Vonalkód:</td><td>@{p.ean}</td>
+                    </tr>
+                    <tr>
+                        <td>Ár:</td> <td>@{p.price} FT</td>
+                    </tr>
+                    <tr>
+                        <td>Raktáron:</td> <td>@{p.stock} db</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group addButton">
+                        <label  class="col-sm-4 control-label"
+                        for="darab@{p.productnumber}">Kiszedett darab</label>
+                        <div class="col-sm-5">
+                            <input type="number" class="form-control"
+                            id="darab@{p.productnumber}" placeholder="Darabszám"/>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="getItemModal(@{p.productnumber}, @{db})">
+                            Kiszedve
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

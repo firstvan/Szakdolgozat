@@ -13,12 +13,16 @@ GET     /products                   controllers.Main.products
 GET     /additem                    controllers.ProductManage.addProduct(itemNo :String, piece :Int, price :Int)
 GET     /orders                     controllers.OpenOrders.getInfromation(id: Int)
 GET     /register                   controllers.Login.register
-GET     /pagination                 controllers.Pagination.index(orderd: Boolean)
+GET     /pagination                 controllers.Pagination.index(orderd: Boolean, admin: Boolean = false)
 GET     /deleteItem                 controllers.Pagination.deleteItem(prodNo: String)
 GET     /deleteOrder                controllers.OpenOrders.deleteOrder(id: Int)
 GET     /gettotal                   controllers.OpenOrders.getTotal
 GET     /updatetime                 controllers.OpenOrders.updateTime(time: String)
-
+GET     /getAdminOpens              controllers.Main.adminIndex
+GET     /closeOrder                 controllers.OpenOrders.closeOrder(id: Int)
+GET     /ordertoclose               controllers.OpenOrders.orderToClose(id: Int)
+GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean, admin: Boolean = true)
+GET     /updateCloseProd            controllers.OpenOrders.closeItem(id: String, db: Int)
 GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path

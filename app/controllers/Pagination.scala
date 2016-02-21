@@ -13,7 +13,7 @@ import scala.collection.mutable.ListBuffer
 class Pagination extends Controller with Secured {
 
 
-  def index(orderd: Boolean) = withAuth { username => implicit request =>
+  def index(orderd: Boolean, admin: Boolean = false) = withAuth { username => implicit request =>
     val actual_page_cookie = request.cookies.get("actual_page")
     var actual_page = 1
     if (actual_page_cookie.isDefined) {
@@ -54,9 +54,14 @@ class Pagination extends Controller with Secured {
       li = getList(name, size, actual_page)
     }
 
-    val map = ActualOrderDAO.getOrderedProducts(order_id)
 
-    Ok(views.html.productlisting(li._1, map, actual_page, size, max_page_number, li._2))
+    if(admin){
+      val map = ActualOrderDAO.getOrderedAndDeliveriedProducts(order_id)
+      Ok(views.html.adminpaging(li._1, map, actual_page, size, max_page_number, li._2))
+    } else {
+      val map = ActualOrderDAO.getOrderedProducts(order_id)
+      Ok(views.html.productlisting(li._1, map, actual_page, size, max_page_number, li._2))
+    }
   }
 
   def test = withAuth { username => implicit request =>

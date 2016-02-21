@@ -46,4 +46,27 @@ trait IActualOrderDAO {
     * @return 0 if success
     */
   def updateTime(orderid: Int, time: String): Int
+
+  /**
+    * Set opened flag to 1;
+    * @param orderid
+    * @return success
+    */
+  def closeOrder(orderid: Int): Int
+
+  /**
+    * Set delevery_piece to db.
+    * @param orderid
+    * @param prodnumber productnumber
+    * @param db orderd piece
+    * @return success
+    */
+  def closeItem(orderid: Int, prodnumber: String, db: Int): Int
+
+  /**
+    * Return ordered and deliveried piece
+    * @param id order id
+    * @return
+    */
+  def getOrderedAndDeliveriedProducts(id: Int): Map[String, (Int, Int)]
 }

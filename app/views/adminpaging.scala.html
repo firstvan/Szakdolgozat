@@ -1,0 +1,75 @@
+@import model.Product
+@(products: List[Product], orderedMap :Map[String, (Int, Int)], actualPage: Int, listedElement: Int, maxPage: Int, elementSize: Int)
+
+@import scala.Int; var counter=1
+@import helper._
+
+<div>
+    @productpaging(listedElement, actualPage, maxPage, elementSize)
+
+    <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $("#products_table tr").each(function(i, e){
+                    $(e).children('td:not(:last)').click(function()
+                    {
+                        var data = $(this).closest('tr').children(":first").children(":first").text();
+                        $("#modal_"+data.replace(" ", "")).modal('show');
+                    });
+                });
+            });
+    </script>
+
+        <label id="p_size" style="display: none">@{products.size}</label>
+        <table id="products_table" class="table table-striped table-bordered table-hover">
+            <thead class="theadinverse">
+                <tr>
+                <th>#</th>
+                <th>Információk</th>
+                <th>Rendelt darabszám</th>
+                <th>Kiszedve</th>
+                <th>#</th>
+                </tr>
+            </thead>
+            <tbody>
+        @{counter = ((actualPage - 1) * listedElement) + 1}
+        @for(p <- products){
+            <tr>
+                <td>
+                    <label id="tomodal" style="display: none;"> @{p.productnumber}</label>
+                    <b>@{counter}</b></td>
+                <td>
+                    <h4>@p.name</h4>
+                    <p>Készlet: @p.stock</p>
+                    <p>Ár: @p.price ft</p>
+                </td>
+                <td>@orderedMap(p.productnumber)._1 db</td>
+                <td id="deli_@{p.productnumber}">
+                    @if(orderedMap(p.productnumber)._1 ==orderedMap(p.productnumber) ._2 ){
+                        <span class="glyphicon glyphicon-ok" style="color: limegreen;"></span>
+                    } else {
+                        @{orderedMap(p.productnumber) ._2} db
+                    }
+                </td>
+                <td>
+                    <span class="glyphicon glyphicon-new-window" onclick="show_confirm(@{p.productnumber})"></span>
+                    <div id="dialog_@{p.productnumber}" title="Biztos?" style="display: none;">
+                        Kiszedve: @orderedMap(p.productnumber)._1 db?
+                        <br/>
+                        <br/>
+                        <button onclick="getItem(@{p.productnumber}, @{orderedMap(p.productnumber)})" style="float: left;">Igen</button>
+                        <button onclick="closeDialog(@{p.productnumber})" style="float: right;">Nem</button>
+
+                    </div>
+                </td>
+            </tr>
+            @{counter=counter+1}
+        }
+            </tbody>
+    </table>
+
+    @productpaging(listedElement, actualPage, maxPage, elementSize)
+</div>
+
+@for(p <- products){
+    @adminModal(p, orderedMap(p.productnumber)._1)
+}

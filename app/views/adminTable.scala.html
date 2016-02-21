@@ -1,0 +1,51 @@
+@import model.TableLook
+@(li: List[TableLook])
+
+<script src="@routes.Assets.versioned("javascripts/adminTable.js")" ></script>
+
+<table id="opened_orders_table" class="table table-striped table-bordered table-hover">
+    <thead class="theadinverse">
+        <tr>
+            <th>#</th>
+            <th>Rendelés id</th>
+            <th>Név</th>
+            <th>Dátum</th>
+            <th>Összeg</th>
+            <th>Törlés</th>
+            <th>Véglegesít</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(i <- li.indices){
+            <tr class="clickable-row" data-href="ordertoclose?id=@li(i)._id">
+                <th scope="row">@(i+1)</th>
+                <td>@li(i)._id</td>
+                <td>@li(i).name</td>
+                <td>@li(i).date</td>
+                <td>@li(i).price ft</td>
+                <td>
+                    <span class="glyphicon glyphicon-remove" style="color: red;" onclick="show_delete_dialog(@{li(i)._id})" />
+                </td>
+                <div id="dialog_@{li(i)._id}" title="Figyelem!" style="display: none;">
+                        Biztosan törli a(z) @{li(i).name} rendelését?
+                    <br/>
+                    <br/>
+                    <button onclick="deleteItem(@{li(i)._id})" style="float: left;">Törlés</button>
+                    <button onclick="closeDialog(@{li(i)._id})" style="float: right;">Mégse</button>
+
+                </div>
+                <td>
+                    <span class="glyphicon glyphicon-ok" style="color: limegreen;" onclick="show_close_dialog(@{li(i)._id})" />
+                </td>
+                <div id="close_dialog_@{li(i)._id}" title="Biztos?" style="display: none;">
+                        Biztosan véglegesíti a(z) @{li(i).name} rendelését?
+                    <br/>
+                    <br/>
+                    <button onclick="closeOrderDialog(@{li(i)._id})" style="float: left;">Véglegesítés</button>
+                    <button onclick="closeDialogClose(@{li(i)._id})" style="float: right;">Mégse</button>
+
+                </div>
+            </tr>
+        }
+    </tbody>
+</table>

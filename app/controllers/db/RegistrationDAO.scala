@@ -29,10 +29,15 @@ object RegistrationDAO extends IRegistrationDAO{
   }
 
   override def getRegistrationByUser(user_id: Int, opened: Int): Option[List[Orders]] = {
-    val itemListObj = collection.find(MongoDBObject("sales_man_id" -> user_id, "opened" -> opened))
+    var itemListObj :MongoCursor = null
+    if(user_id == 0) {
+      itemListObj = collection.find(MongoDBObject("opened" -> opened))
+    } else {
+      itemListObj = collection.find(MongoDBObject("sales_man_id" -> user_id, "opened" -> opened))
+    }
 
     if(itemListObj.isEmpty)
-      return None
+       return None
 
     val returnList = ListBuffer[Orders]()
 
@@ -40,15 +45,15 @@ object RegistrationDAO extends IRegistrationDAO{
       returnList.append(getRegistration(x))
     }
 
-    return Some(returnList.toList)
+    Some(returnList.toList)
   }
 
 
   private def getRegistration(item: RegistrationDAO.this.collection.T) : Orders = {
 
     val format = "dd-MM-yyyy"
-    val indate = DateTime.parse(item.get("date_of_take").toString(), DateTimeFormat.forPattern(format))
-    val outdate = DateTime.parse(item.get("delivery_date").toString(), DateTimeFormat.forPattern(format))
+    val indate = DateTime.parse(item.get("date_of_take").toString, DateTimeFormat.forPattern(format))
+    val outdate = DateTime.parse(item.get("delivery_date").toString, DateTimeFormat.forPattern(format))
 
     return new Orders(item.getAs[Int]("_id").get, item.getAs[Int]("sales_man_id").get,
      item.getAs[Int]("customer").get, indate, outdate, item.getAs[Int]("opened").get, item.getAs[Int]("total").get)

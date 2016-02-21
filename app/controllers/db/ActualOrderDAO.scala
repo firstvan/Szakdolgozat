@@ -213,4 +213,62 @@ object ActualOrderDAO extends IActualOrderDAO{
       1
     }
   }
+
+  /**
+    * Set opened flag to 1;
+    *
+    * @param orderid
+    * @return success
+    */
+  override def closeOrder(orderid: Int): Int = {
+    val query = MongoDBObject("_id" -> orderid)
+
+    val res = collectionOrder.findAndModify(query, $set("opened" -> 1))
+
+    if(res.isDefined){
+      0
+    } else {
+      1
+    }
+  }
+
+  /**
+    * Set delevery_piece to db.
+    *
+    * @param orderid
+    * @param prodnumber productnumber
+    * @param db         orderd piece
+    * @return success
+    */
+  override def closeItem(orderid: Int, prodnumber: String, db: Int): Int = {
+    val query = MongoDBObject("order_id" -> orderid, "product_number" -> prodnumber)
+
+    val res = collectionItems.findAndModify(query, $set("deliveried" -> db))
+
+    if(res.isDefined){
+      0
+    } else {
+      1
+    }
+
+  }
+
+  /**
+    * Return ordered and deliveried piece
+    *
+    * @param id order id
+    * @return
+    */
+  override def getOrderedAndDeliveriedProducts(id: Int): Map[String, (Int, Int)] = {
+    var retDict: Map[String, (Int, Int)] = Map()
+    val productsObj = collectionItems.find(MongoDBObject("order_id" -> id))
+
+
+    for(x <- productsObj){
+      val prod = getProduct(x)
+      retDict += (prod.product_number -> (prod.ordered_piece, prod.delivered))
+    }
+
+    retDict
+  }
 }

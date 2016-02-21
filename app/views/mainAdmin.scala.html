@@ -1,0 +1,13 @@
+@(username: String)(implicit req: RequestHeader)
+
+@main("Főoldal", 5, username){
+    <script src="@routes.Assets.versioned("javascripts/mainAdmin.js")" ></script>
+    <div class="basicsetting">
+        <div class="page-header">
+            <h1>Nyitott rendelések</h1>
+        </div>
+        <div id="open_order_content">
+        </div>
+    </div>
+
+}
