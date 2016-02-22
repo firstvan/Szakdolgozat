@@ -17,6 +17,7 @@ GET     /pagination                 controllers.Pagination.index(orderd: Boolean
 GET     /deleteItem                 controllers.Pagination.deleteItem(prodNo: String)
 GET     /deleteOrder                controllers.OpenOrders.deleteOrder(id: Int)
 GET     /gettotal                   controllers.OpenOrders.getTotal
+GET     /getDTotal                  controllers.OpenOrders.getDTotal
 GET     /updatetime                 controllers.OpenOrders.updateTime(time: String)
 GET     /getAdminOpens              controllers.Main.adminIndex
 GET     /closeOrder                 controllers.OpenOrders.closeOrder(id: Int)

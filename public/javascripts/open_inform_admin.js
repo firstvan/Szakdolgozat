@@ -50,6 +50,7 @@ jQuery(document).ready(function($) {
         if($("#base_inform_content").is(":hidden")){
             $("#orderd_products_content").hide();
             $("#base_inform_content").show();
+            refresh();
         } else {
             $("#base_inform_content").hide();
         }
@@ -68,3 +69,8 @@ jQuery(document).ready(function($) {
 
 });
 
+function refresh(){
+    $.get("/getDTotal", function (data){
+        $("#d_total").text(data + " ft");
+    });
+}

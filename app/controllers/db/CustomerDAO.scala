@@ -15,7 +15,7 @@ object CustomerDAO extends ICustomerDAO{
     if(cust.isEmpty)
       return None
 
-    return Some(getCustomer(cust.get))
+    Some(getCustomer(cust.get))
   }
 
 

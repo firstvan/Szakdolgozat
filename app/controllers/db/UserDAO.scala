@@ -19,9 +19,7 @@ object UserDAO extends IUserDAO{
     val returnUser = new User(usr.as[Int]("_id"), name, usr.get("passwordHash").toString(),
       usr.get("fullname").toString(), usr.get("accountType").toString())
 
-
-
-    return Some(returnUser)
+    Some(returnUser)
   }
 
   override def insertUser(user: User): Unit = {
@@ -29,6 +27,19 @@ object UserDAO extends IUserDAO{
     collection.save(dbObject)
   }
 
+  override def getUserByUserID(id: Int): Option[User] = {
+    val usrObj = collection.findOne(MongoDBObject("_id" -> id))
+
+    if(usrObj.isEmpty)
+      return None
+
+    val usr = usrObj.get
+
+    val returnUser = new User(usr.as[Int]("_id"), usr.getAs[String]("fullname").get, usr.get("passwordHash").toString,
+      usr.get("fullname").toString, usr.get("accountType").toString)
+
+    Some(returnUser)
+  }
 }
 
 

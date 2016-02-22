@@ -1,7 +1,5 @@
 package controllers.db
 
-import model.OrderedItem
-
 trait IActualOrderDAO {
   def addOrder(orderNumber: Int, productNumber: String ,ordered: Int, actualPrice: Int)
 
@@ -40,6 +38,13 @@ trait IActualOrderDAO {
   def getTotal(orderid: Int): Int
 
   /**
+    * Return the total of delivered order by order id.
+    * @param orderid
+    * @return total of order
+    */
+  def getDeliveryTotal(orderid: Int): Int
+
+  /**
     * Update delevery time.
     * @param orderid id of order
     * @param time time to update
@@ -61,7 +66,7 @@ trait IActualOrderDAO {
     * @param db orderd piece
     * @return success
     */
-  def closeItem(orderid: Int, prodnumber: String, db: Int): Int
+  def closeItem(orderid: Int, prodnumber: String, db: Int): (Int,Int)
 
   /**
     * Return ordered and deliveried piece

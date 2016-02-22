@@ -25,7 +25,7 @@ object RegistrationDAO extends IRegistrationDAO{
       returnList.append(getRegistration(x))
     }
 
-    return Some(returnList.toList)
+    Some(returnList.toList)
   }
 
   override def getRegistrationByUser(user_id: Int, opened: Int): Option[List[Orders]] = {
@@ -55,14 +55,15 @@ object RegistrationDAO extends IRegistrationDAO{
     val indate = DateTime.parse(item.get("date_of_take").toString, DateTimeFormat.forPattern(format))
     val outdate = DateTime.parse(item.get("delivery_date").toString, DateTimeFormat.forPattern(format))
 
-    return new Orders(item.getAs[Int]("_id").get, item.getAs[Int]("sales_man_id").get,
-     item.getAs[Int]("customer").get, indate, outdate, item.getAs[Int]("opened").get, item.getAs[Int]("total").get)
+    new Orders(item.getAs[Int]("_id").get, item.getAs[Int]("sales_man_id").get,
+     item.getAs[Int]("customer").get, indate, outdate, item.getAs[Int]("opened").get,
+     item.getAs[Int]("total").get, item.getAs[Int]("d_total").get)
   }
 
   override def getOrderById(id: Int): Orders = {
 
     val order = collection.findOne(MongoDBObject("_id" -> id)).get
 
-    return getRegistration(order)
+    getRegistration(order)
   }
 }

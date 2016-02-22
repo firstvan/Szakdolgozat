@@ -1,5 +1,5 @@
 @import model.Orders
-@(user: String, order: Orders, customer_name: String, date: String, delivery: String)(implicit req: RequestHeader)
+@(user: String, order: Orders, customer_name: String, date: String, delivery: String, kuser: String)(implicit req: RequestHeader)
 
 @main(customer_name + " rendelése", 2, user){
     <script>
@@ -35,7 +35,7 @@
                         <b>Kapcsolattartó: </b>
                     </td>
                     <td style="width: 50%">
-                    @{user}
+                    @{kuser}
                     </td>
                 </tr>
                 <tr>
@@ -64,6 +64,14 @@
                     </td>
                     <td id="total" style="width: 50%">
                         @{order.total} ft
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%">
+                        <b>Kiszedett összeg: </b>
+                    </td>
+                    <td id="d_total" style="width: 50%">
+                        @{order.d_total} ft
                     </td>
                 </tr>
             </table>

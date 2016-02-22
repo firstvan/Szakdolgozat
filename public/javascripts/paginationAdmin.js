@@ -44,28 +44,39 @@ function closeDialog(id) {
 function getItem(id, num) {
     $.get("/updateCloseProd?id="+id+"&db="+num, function(data){
         closeDialog(id);
-        if(data === '0'){
-            index_page(true);
+        if(data === '-1'){
+            alert("hiba");
         }
         else {
-            alert("hiba");
+            index_page(true);
         }
     });
 }
 
 function getItemModal(id, ord) {
     var db = $("#darab"+id).val();
+    var stock = parseInt($("#stock_"+id).text());
     $.get("/updateCloseProd?id="+id+"&db="+db, function(data){
-        if(data === '0'){
-            if(ord.toString() === db) {
+        var nums = data.split(" ");
+        var first = parseInt(nums[0]);
+        var sec = parseInt(nums[1]);
+        var newStock = 0;
+
+        if(sec < 0)
+            newStock = stock - sec;
+        else
+            newStock = stock - first;
+
+
+        if(first === ord) {
                 $("#deli_"+id).empty().append("<span class='glyphicon glyphicon-ok' style='color: limegreen;'></span>");
+                $("#stock_"+id).empty().append(newStock);
+                $("#stockM_"+id).empty().append(newStock);
             } else {
-                $("#deli_"+id).empty().append(db+ " db");
+                $("#deli_"+id).empty().append(first + " db");
+                $("#stock_"+id).empty().append(newStock);
+                $("#stockM_"+id).empty().append(newStock);
             }
-        }
-        else {
-            alert("hiba");
-        }
     });
     $("#modal_"+id).modal("hide");
 }

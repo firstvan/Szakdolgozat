@@ -73,12 +73,13 @@ object ActualOrderDAO extends IActualOrderDAO{
       "date_of_take" -> format.format(new java.util.Date()),
       "delivery_date" -> delivery,
       "opened" -> OrderState.Open,
-      "total" -> 0
+      "total" -> 0,
+      "d_total" -> 0
     )
 
     collectionOrder.insert(newOrder)
 
-    return orderNum
+    orderNum
   }
 
 
@@ -101,7 +102,7 @@ object ActualOrderDAO extends IActualOrderDAO{
     val id = item.get.as[Int]("_id")
     //println(id)
 
-    return id + 1
+    id + 1
   }
 
   override def getOrderedProducts(actualOrder: Int): Map[String, Int] = {
@@ -113,11 +114,11 @@ object ActualOrderDAO extends IActualOrderDAO{
       retDict += (prod.product_number -> prod.ordered_piece)
     }
 
-    return retDict
+    retDict
   }
 
   private def getProduct(item: ActualOrderDAO.this.collectionItems.T) : OrderedItem = {
-    return new OrderedItem(item.getAs[Int]("_id").get,
+    new OrderedItem(item.getAs[Int]("_id").get,
       item.getAs[Int]("order_id").get,
       item.getAs[String]("product_number").get,
       item.getAs[Int]("ordered_piece").get,
@@ -169,12 +170,10 @@ object ActualOrderDAO extends IActualOrderDAO{
     if(remove.isDefined){
       query = MongoDBObject("order_id" -> orderid)
       collectionItems.remove(query)
-
       0
     } else{
       1
     }
-
   }
 
   /**
@@ -188,7 +187,7 @@ object ActualOrderDAO extends IActualOrderDAO{
 
     val get = collectionOrder.findOne(query).get
 
-    return get.getAs[Int]("total").get
+    get.getAs[Int]("total").get
   }
 
   /**
@@ -240,17 +239,31 @@ object ActualOrderDAO extends IActualOrderDAO{
     * @param db         orderd piece
     * @return success
     */
-  override def closeItem(orderid: Int, prodnumber: String, db: Int): Int = {
+  override def closeItem(orderid: Int, prodnumber: String, db: Int): (Int,Int) = {
     val query = MongoDBObject("order_id" -> orderid, "product_number" -> prodnumber)
 
-    val res = collectionItems.findAndModify(query, $set("deliveried" -> db))
+    val item = collectionItems.findOne(query)
+    val oldD = item.get.getAs[Int]("deliveried").get
+    var del = 0
+    val sub = db - oldD
+    del = ProductDAO.updateStock(prodnumber, db, sub)
 
-    if(res.isDefined){
-      0
+    val res = collectionItems.findAndModify(query, $set("deliveried" -> del))
+
+    val query2 = MongoDBObject("_id" -> orderid)
+    val order = collectionOrder.findOne(query2)
+
+    val oldnum = item.get.getAs[Int]("deliveried").get
+    var d_total = 0
+    if(oldnum == 0){
+      d_total = order.get.getAs[Int]("d_total").get + res.get.getAs[Int]("ordered_price").get * db
     } else {
-      1
+      d_total = order.get.getAs[Int]("d_total").get + res.get.getAs[Int]("ordered_price").get * (db - oldnum)
     }
 
+    val res2 = collectionOrder.findAndModify(query2, $set("d_total" -> d_total))
+
+    (del, sub)
   }
 
   /**
@@ -268,7 +281,20 @@ object ActualOrderDAO extends IActualOrderDAO{
       val prod = getProduct(x)
       retDict += (prod.product_number -> (prod.ordered_piece, prod.delivered))
     }
-
     retDict
+  }
+
+  /**
+    * Return the delivery total of delivered order by order id.
+    *
+    * @param orderid
+    * @return total of order
+    */
+  override def getDeliveryTotal(orderid: Int): Int = {
+    val query = MongoDBObject("_id" -> orderid)
+
+    val get = collectionOrder.findOne(query).get
+
+    get.getAs[Int]("d_total").get
   }
 }
