@@ -10,4 +10,11 @@ trait ICustomerDAO {
   def getLowerCustomerNames(): List[String]
 
   def getCustomerByName(name: String) : Option[Customer]
+
+  /**
+    * List of customers
+    *
+    * @return
+    */
+  def getCustomerList(name: String) : List[Customer]
 }

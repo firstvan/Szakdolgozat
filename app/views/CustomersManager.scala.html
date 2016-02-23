@@ -1,0 +1,42 @@
+@import model.Customer
+@(username: String, customers: List[Customer])(implicit req: RequestHeader)
+
+@main("Vásárlók", 9, username){
+    <script src="@routes.Assets.versioned("javascripts/CustomerManager.js")" ></script>
+    <div class="basicsetting">
+        <div class="page-header">
+            <h1>Vásárlók</h1>
+        </div>
+        <div id="customer-table-container">
+            <button class="btn btn-primary" style="float: right;" onclick="location.href ='modifyCustomer?id=0'">
+                <span class="glyphicon glyphicon-plus">
+                </span>
+                Új vásárló
+            </button>
+            <br/>
+            <br/>
+            <table id="users-table" class="table table-striped table-bordered table-hover">
+                <thead class="theadinverse">
+                    <tr>
+                        <th>#</th>
+                        <th>Kód</th>
+                        <th>Teljes név</th>
+                        <th>Szállítási cím</th>
+                        <th>Törlés</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(cust <- customers) {
+                    <tr class="clickable-row" data-href="modifyUser?id=@cust._id">
+                        <td>@{cust._id}</td>
+                        <td>@{cust.code}</td>
+                        <td>@{cust.name}</td>
+                        <td>@{cust.billing_address}</td>
+                        <td><span class="glyphicon glyphicon-remove" style="color: red;"></span></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

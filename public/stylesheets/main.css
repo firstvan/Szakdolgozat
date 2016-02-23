@@ -41,9 +41,30 @@ body {
   margin-top: 60px;
 }
 
+@media screen and (min-width: 480px) {
+    .basicform {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    .basicform {
+        width: 60%;
+        margin: 0 auto;
+    }
+}
+
+@media screen and (min-width: 1080px) {
+    .basicform {
+        width: 30%;
+        margin: 0 auto;
+    }
+}
+
 .basicsetting {
-  width: 80%;
-  margin: 0 auto;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .theadinverse{

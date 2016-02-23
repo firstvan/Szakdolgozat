@@ -1,0 +1,45 @@
+@import model.User
+@(username: String, user: User)(implicit req: RequestHeader)
+
+@main("Felhasználók", 8, username){
+    <script src="@routes.Assets.versioned("javascripts/UserModify.js")" ></script>
+<div class="basicform">
+    <div class="input-group" style="width: 100%;">
+       <label>Felhasználó név</label>
+        @if(user == null){
+            <input id="usr_name" type="text" class="form-control" placeholder="Felhasználó név" aria-describedby="basic-addon1">
+        } else {
+            <input id="usr_name" type="text" class="form-control" placeholder="Felhasználó név" value="@{user.username}" aria-describedby="basic-addon1">
+        }
+    </div>
+    <br/>
+    <div class="input-group" style="width: 100%;">
+        <label>Teljes név</label>
+        @if(user == null){
+            <input id="fname" type="text" class="form-control" placeholder="Teljes név" aria-describedby="basic-addon1">
+        } else {
+            <input id="fname" type="text" class="form-control" placeholder="Teljes név" value="@{user.fullname}" aria-describedby="basic-addon1">
+        }
+    </div>
+    <br/>
+    <div class="input-group" style="width: 100%;">
+        <label>Jelszó</label>
+        <input id="pass" type="password" class="form-control" placeholder="Jelszó" aria-describedby="basic-addon1">
+    </div>
+    <br/>
+    <div class="input-group" style="width: 100%;">
+        <label>Jelszó újra</label>
+        <input id="pass_re" type="password" class="form-control" placeholder="Jelszó újra" aria-describedby="basic-addon1">
+    </div>
+    <br/>
+    <div>
+    @if(user != null) {
+        <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_user(@{user._id})">Mentés</button>
+    } else {
+        <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_user(0)">Mentés</button>
+    }
+    </div>
+    <div id="alert_dialog" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Foglalt felhasználó név</div>
+    <div id="alert_dialog_pass" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Jelszók nem egyeznek meg!</div>
+</div>
+}

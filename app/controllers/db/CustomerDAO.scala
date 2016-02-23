@@ -28,7 +28,7 @@ object CustomerDAO extends ICustomerDAO{
       return_list.append(c.getAs[String]("name").get)
     }
 
-    return return_list.toList
+    return_list.toList
   }
 
   override def getLowerCustomerNames(): List[String] = {
@@ -40,13 +40,13 @@ object CustomerDAO extends ICustomerDAO{
       return_list.append(c.getAs[String]("lowerName").get)
     }
 
-    return return_list.toList
+    return_list.toList
   }
 
-  private def getCustomer(item: collection.T) : Customer = {
-    return new Customer(item.getAs[Int]("_id").get, item.getAs[String]("name").get,
+  private def getCustomer(item: CustomerDAO.this.collection.T) : Customer = {
+    new Customer(item.getAs[Int]("_id").get, item.getAs[String]("name").get,
       item.getAs[String]("billing_name").get, item.getAs[String]("billing_address").get,
-      item.getAs[String]("p_type").get, item.getAs[String]("lowerName").get)
+      item.getAs[String]("p_type").get, item.getAs[String]("lowerName").get, item.getAs[Int]("code").get)
   }
 
   override def getCustomerByName(name: String): Option[Customer] = {
@@ -56,6 +56,25 @@ object CustomerDAO extends ICustomerDAO{
       return None
     }
 
-    return Some(getCustomer(cust.get))
+    Some(getCustomer(cust.get))
+  }
+
+  /**
+    * List of customers
+    *
+    * @return
+    */
+  override def getCustomerList(name :String): List[Customer] = {
+    val nameWithRegex = "^" + name.toLowerCase() + ".*"
+    val query = MongoDBObject("lowerName" -> nameWithRegex.r)
+
+    val li = collection.find(query)
+    val result = new ListBuffer[Customer]()
+
+    for(x <- li){
+      result += getCustomer(x)
+    }
+
+    result.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
   }
 }

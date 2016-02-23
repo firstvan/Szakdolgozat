@@ -17,7 +17,7 @@ object ProductDAO extends IProductDAO {
 
     val item = itemObj.get
 
-    return Some(getProduct(item))
+    Some(getProduct(item))
   }
 
   override def getElementByName(name: String): List[Product] = {
@@ -30,11 +30,11 @@ object ProductDAO extends IProductDAO {
       return_list += getProduct(x)
     }
 
-    return return_list.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
+    return_list.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
   }
 
   private def getProduct(item: ProductDAO.this.collection.T): Product = {
-    return new Product(item.getAs[String]("productnumber").get,
+    new Product(item.getAs[String]("productnumber").get,
       item.getAs[String]("name").get,
       item.getAs[Int]("ar").get,
       item.getAs[Int]("stock").get,

@@ -24,6 +24,10 @@ GET     /closeOrder                 controllers.OpenOrders.closeOrder(id: Int)
 GET     /ordertoclose               controllers.OpenOrders.orderToClose(id: Int)
 GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean, admin: Boolean = true)
 GET     /updateCloseProd            controllers.OpenOrders.closeItem(id: String, db: Int)
+GET     /users                      controllers.UserManager.index
+GET     /modifyUser                 controllers.UserManager.modifyUser(id: Int)
+POST    /saveUser                   controllers.UserManager.saveUser
+GET     /customers                  controllers.CustomerManager.index
 GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path

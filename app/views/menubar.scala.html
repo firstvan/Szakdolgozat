@@ -23,6 +23,18 @@
             @if(menuBarType == 3) {
              <li class="active noneclickable"><a href="addorder">Új rendelés</a></li>
             }
+
+            @if(menuBarType == 6) {
+                <li><a href="users"><span class="glyphicon glyphicon-user"></span>Felhasználók</a></li>
+                <li><a href="customers"><span class="glyphicon glyphicon-user"></span>Vásárlók</a></li>
+            }
+
+            @if(menuBarType == 7) {
+                <li class="active noneclickable"><a href="users"><span class="glyphicon glyphicon-user"></span>Felhasználók</a></li>
+            }
+            @if(menuBarType == 8) {
+                <li><a href="users"><span class="glyphicon glyphicon-user"></span>Felhasználók</a></li>
+            }
         </ul>
         <ul class="nav navbar-nav navbar-right">
             @if(menuBarType == 1){
