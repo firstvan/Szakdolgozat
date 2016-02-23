@@ -17,4 +17,28 @@ trait ICustomerDAO {
     * @return
     */
   def getCustomerList(name: String) : List[Customer]
+
+  /**
+    * Insert a customer to database.
+    * @param name
+    * @param add
+    * @param payment
+    * @return
+    */
+  def insertCustomer(name: String, add: String, payment: String): Boolean
+
+  /**
+    * Modify user by params.
+    * @param id
+    * @param name
+    * @param addr
+    * @param payment
+    */
+  def saveCustomer(id: Int, name: String, addr: String, payment: String): Unit
+
+  /**
+    * Delete customer.
+    * @param id
+    */
+  def deleteCustomer(id: Int): Unit
 }

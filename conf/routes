@@ -28,6 +28,10 @@ GET     /users                      controllers.UserManager.index
 GET     /modifyUser                 controllers.UserManager.modifyUser(id: Int)
 POST    /saveUser                   controllers.UserManager.saveUser
 GET     /customers                  controllers.CustomerManager.index
+GET     /modifyCustomer             controllers.CustomerManager.modifyCustomer(id: Int)
+POST    /saveCustomer               controllers.CustomerManager.saveCustomer
+GET     /customerTable              controllers.CustomerManager.customerTable
+GET     /removeCustomer             controllers.CustomerManager.deleteCustomer(id: Int)
 GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path

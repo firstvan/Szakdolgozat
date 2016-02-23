@@ -77,4 +77,93 @@ object CustomerDAO extends ICustomerDAO{
 
     result.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
   }
+
+  /**
+    * Insert a customer to database.
+    *
+    * @param name
+    * @param add
+    * @param payment
+    * @return
+    */
+  override def insertCustomer(name: String, add: String, payment: String): Boolean = {
+    val list = getCodes()
+    var rndNumber = scala.util.Random.nextInt(10000)
+
+    while(list.contains(rndNumber)){
+      rndNumber = scala.util.Random.nextInt(10000)
+    }
+
+    val id = getIdNum()
+
+    val newCustomer = MongoDBObject (
+      "_id" -> id,
+      "code" -> rndNumber,
+      "name" -> name,
+      "lowerName" -> name.toLowerCase,
+      "billing_name" -> name,
+      "p_type" -> payment,
+      "billing_address" -> add
+    )
+
+    collection.insert(newCustomer)
+    true
+  }
+
+  /**
+    * Modify user by params.
+    *
+    * @param id
+    * @param name
+    * @param addr
+    * @param payment
+    */
+  override def saveCustomer(id: Int, name: String, addr: String, payment: String): Unit = {
+    val query = MongoDBObject("_id" -> id)
+
+    collection.findAndModify(query, $set("name"->name, "lowerName"->name.toLowerCase, "billing_name"->name,
+      "billing_address"-> addr, "p_type" ->payment))
+  }
+
+  /**
+    * Get the max id of user to autoincrement.
+    *
+    * @return Int of max id
+    */
+  private def getIdNum(): Int = {
+    val query = MongoDBObject() // All documents
+    val fields = MongoDBObject("_id" -> 1) // Only return `_id`
+    val orderBy = MongoDBObject("_id" -> -1) // Order by _id descending
+
+    val item = collection.findOne(query, fields, orderBy)
+
+    if(item.isEmpty){
+      return 0
+    }
+
+    val id = item.get.as[Int]("_id")
+
+    id + 1
+  }
+
+  private def getCodes(): List[Int] = {
+    val res = collection.find()
+
+    val returnlist = new ListBuffer[Int]
+    for(x <- res) {
+      returnlist += x.getAs[Int]("code").get
+    }
+
+    returnlist.toList
+  }
+
+  /**
+    * Delete customer.
+    *
+    * @param id
+    */
+  override def deleteCustomer(id: Int): Unit = {
+    val query = MongoDBObject("_id" -> id)
+    collection.remove(query)
+  }
 }

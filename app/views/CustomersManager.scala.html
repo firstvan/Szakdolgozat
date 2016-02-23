@@ -8,35 +8,23 @@
             <h1>Vásárlók</h1>
         </div>
         <div id="customer-table-container">
-            <button class="btn btn-primary" style="float: right;" onclick="location.href ='modifyCustomer?id=0'">
-                <span class="glyphicon glyphicon-plus">
-                </span>
-                Új vásárló
-            </button>
+            <div class="input-group" style="display: flex;">
+                <div class="input-group" style="width: 30%; float: left;">
+                    <input id="search_text" type="text" class="form-control" placeholder="Felhasználó név">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="searchUser()">Keresés</button>
+                    </span>
+                </div>
+                <div style="position: absolute; right: 0;">
+                    <button class="btn btn-primary" onclick="location.href ='modifyCustomer?id=0'">
+                          <span class="glyphicon glyphicon-plus"></span>
+                          Új vásárló
+                    </button>
+                </div>
+            </div>
             <br/>
-            <br/>
-            <table id="users-table" class="table table-striped table-bordered table-hover">
-                <thead class="theadinverse">
-                    <tr>
-                        <th>#</th>
-                        <th>Kód</th>
-                        <th>Teljes név</th>
-                        <th>Szállítási cím</th>
-                        <th>Törlés</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @for(cust <- customers) {
-                    <tr class="clickable-row" data-href="modifyUser?id=@cust._id">
-                        <td>@{cust._id}</td>
-                        <td>@{cust.code}</td>
-                        <td>@{cust.name}</td>
-                        <td>@{cust.billing_address}</td>
-                        <td><span class="glyphicon glyphicon-remove" style="color: red;"></span></td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+            <div id="customer_table">
+            </div>
         </div>
     </div>
 }

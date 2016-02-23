@@ -1,0 +1,36 @@
+@import model.Customer
+@(customers: List[Customer], lSize: Int, actualPage: Int, elementSize: Int)
+
+<table id="customers-table" class="table table-striped table-bordered table-hover">
+    <thead class="theadinverse">
+        <tr>
+            <th>#</th>
+            <th>Kód</th>
+            <th>Teljes név</th>
+            <th>Szállítási cím</th>
+            <th>Törlés</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(cust <- customers) {
+            <tr class="clickable-row" data-href="modifyCustomer?id=@cust._id">
+                <td>@{cust._id}</td>
+                <td>@{cust.code}</td>
+                <td>@{cust.name}</td>
+                <td>@{cust.billing_address}</td>
+                <td><span class="glyphicon glyphicon-remove" style="color: red;" onclick="removeCustomer(@{cust._id});"></span></td>
+                <div id="dialog_@{cust._id}" title="Figyelem!" style="display: none;">
+                        Biztosan törli a(z) @{cust.name} vásárlót?
+                    <br/>
+                    <br/>
+                    <button onclick="deleteItem(@{cust._id})" style="float: left;">Törlés</button>
+                    <button onclick="closeDialog(@{cust._id})" style="float: right;">Mégse</button>
+
+                </div>
+            </tr>
+        }
+    </tbody>
+</table>
+
+    @productpaging(lSize, actualPage, 8, elementSize)
+

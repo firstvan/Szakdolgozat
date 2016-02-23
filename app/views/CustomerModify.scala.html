@@ -1,0 +1,62 @@
+@import model.Customer
+@(username: String, cust: Customer)(implicit req: RequestHeader)
+
+@main("Vásárlók", 8, username){
+    <script src="@routes.Assets.versioned("javascripts/CustomerModify.js")" ></script>
+    <div class="basicform">
+        <div class="input-group" style="width: 100%;">
+            <label>Kód</label>
+            @if(cust != null) {
+                <input id="code" type="text"  class="form-control" placeholder="@{cust.code}" aria-describedby="basic-addon1" readonly>
+            } else {
+                <input id="code" type="text"  class="form-control" placeholder=" " aria-describedby="basic-addon1" readonly>
+            }
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Vásárló név</label>
+            @if(cust == null){
+                <input id="cust_name" type="text" class="form-control" placeholder="Teljes név" aria-describedby="basic-addon1">
+            } else {
+                <input id="cust_name" type="text" class="form-control" placeholder="Teljes név" value="@{cust.name}" aria-describedby="basic-addon1">
+                }
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Szállítási cím</label>
+            @if(cust == null){
+                <input id="addr" type="text" class="form-control" placeholder="Szállítási cím" aria-describedby="basic-addon1">
+            } else {
+                <input id="addr" type="text" class="form-control" placeholder="Szállítási cím" value="@{cust.billing_address}" aria-describedby="basic-addon1">
+                }
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Fizetés</label>
+            <div style="width: 100%;">
+                <select class="form-control" id="payform">
+                    <option value="">Válasszon</option>
+                    @if(cust != null && cust.p_type.equals("normal")){
+                        <option value="normal" selected="selected">Készpénz</option>
+                    } else {
+                        <option value="normal">Készpénz</option>
+                    }
+                    @if(cust != null && cust.p_type.equals("transfer")) {
+                        <option value="transfer" selected="selected">Átutalás</option>
+                    } else {
+                        <option value="transfer">Átutalás</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <br/>
+        <div>
+        @if(cust != null) {
+            <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(@{cust._id})">Mentés</button>
+        } else {
+            <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(0)">Mentés</button>
+        }
+        </div>
+        <div id="alert_dialog" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Válaszzon fizetési módot!</div>
+    </div>
+}
