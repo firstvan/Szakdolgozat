@@ -1,9 +1,9 @@
 package controllers
 
-import controllers.db.{RegistrationDAO, CustomerDAO}
+import controllers.db.{UserDAO, RegistrationDAO, CustomerDAO}
 import model.{TableLook, Orders}
 import org.joda.time.format.DateTimeFormat
-import play.api.mvc.Controller
+import play.api.mvc.{Cookie, Controller}
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -40,6 +40,16 @@ class ClosedOrders extends Controller with Secured {
     val list = tableLook(RegistrationDAO.getOrders(name, start, end))
 
     Ok(views.html.ClosedOrderTable(list))
+  }
+
+  def getInfromation(id: Int) = withAuth { username => implicit request =>
+    val order = RegistrationDAO.getOrderById(id)
+    val cust = CustomerDAO.getCustomerById(order.customer)
+    val f = DateTimeFormat.forPattern("yyyy.MM.dd")
+    val date  = f.print(order.date_of_take)
+    val delevery = f.print(order.delivery_date)
+    val ktar = UserDAO.getUserByUserID(order.sales_man_id)
+    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, true)).withCookies(new Cookie("orderid", id.toString))
   }
 
   private def tableLook(li: List[Orders]) : List[TableLook] ={

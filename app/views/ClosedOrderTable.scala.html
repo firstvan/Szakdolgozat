@@ -2,7 +2,9 @@
 @(li: List[TableLook])
 
 
-    <table id="opened_orders_table" class="table table-striped table-bordered table-hover">
+
+<script src="@routes.Assets.versioned("javascripts/ClosedOrderTable.js")" ></script>
+    <table id="closed_orders_table" class="table table-striped table-bordered table-hover">
         <thead class="theadinverse">
             <tr>
                 <th>#</th>
@@ -14,7 +16,7 @@
         </thead>
         <tbody>
             @for(i <- li.indices){
-                <tr class="clickable-row" data-href="orders?id=@li(i)._id">
+                <tr class="clickable-row" data-href="closedOrder?id=@li(i)._id">
                     <th scope="row">@(i+1)</th>
                     <td>@li(i)._id</td>
                     <td>@li(i).name</td>

@@ -72,7 +72,7 @@ class OpenOrders extends Controller with Secured{
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
     val ktar = UserDAO.getUserByUserID(order.sales_man_id)
-    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname)).withCookies(new Cookie("orderid", id.toString))
+    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, false)).withCookies(new Cookie("orderid", id.toString))
   }
 
   /**

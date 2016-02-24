@@ -1,5 +1,5 @@
 @import model.Product
-@(p: Product, db: Int)
+@(p: Product, db: Int, closed: Boolean)
 
 
 <div class="modal fade" id="modal_@{p.productnumber}">
@@ -26,22 +26,29 @@
                         <td>Raktáron:</td> <td><span id="stock_@{p.productnumber}">@{p.stock}</span> db</td>
                     </tr>
                 </table>
+                @closed
             </div>
-            <div class="modal-footer">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group addButton">
-                        <label  class="col-sm-4 control-label"
-                        for="darab@{p.productnumber}">Kiszedett darab</label>
-                        <div class="col-sm-5">
-                            <input type="number" class="form-control"
-                            id="darab@{p.productnumber}" placeholder="Darabszám"/>
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="getItemModal(@{p.productnumber}, @{db})">
+            @if(!closed) {
+                <div class="modal-footer">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group addButton">
+                            <label class="col-sm-4 control-label"
+                            for="darab@{
+                                p.productnumber
+                            }">Kiszedett darab</label>
+                            <div class="col-sm-5">
+                                <input type="number" class="form-control"
+                                id="darab@{
+                                    p.productnumber
+                                }" placeholder="Darabszám"/>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="getItemModal(@{p.productnumber}, @{db})">
                             Kiszedve
-                        </button>
-                    </div>
-                </form>
-            </div>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
     </div>
 </div>

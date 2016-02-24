@@ -1,10 +1,10 @@
 @import model.Orders
-@(user: String, order: Orders, customer_name: String, date: String, delivery: String, kuser: String)(implicit req: RequestHeader)
+@(user: String, order: Orders, customer_name: String, date: String, delivery: String, kuser: String, closed: Boolean)(implicit req: RequestHeader)
 
-@main(customer_name + " rendelése", 2, user){
+@main(customer_name + " rendelése", 6, user){
     <script>
             $(document).ready(function(){
-                index_page(true);
+                index_page(true, @{closed});
             });
     </script>
     <script src="@routes.Assets.versioned("javascripts/open_inform_admin.js")" ></script>
@@ -103,7 +103,7 @@
                                         <div id="search_id" class="input-group" style="margin-bottom: 2%">
                                             <input id="search_text" type="text" class="form-control" placeholder="Termék neve...">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" onclick="search()">Keresés</button>
+                                                <button class="btn btn-default" type="button" onclick="search(@{closed})">Keresés</button>
                                             </span>
                                         </div>
                                     </td>
@@ -116,10 +116,10 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-right">
-                                                <li><a href="#" onclick="setListSize(5)">5</a></li>
-                                                <li><a href="#" onclick="setListSize(10)">10</a></li>
-                                                <li><a href="#" onclick="setListSize(50)">50</a></li>
-                                                <li><a href="#" onclick="setListSize(100)">100</a></li>
+                                                <li><a href="#" onclick="setListSize(5, @{closed})">5</a></li>
+                                                <li><a href="#" onclick="setListSize(10, @{closed})">10</a></li>
+                                                <li><a href="#" onclick="setListSize(50, @{closed})">50</a></li>
+                                                <li><a href="#" onclick="setListSize(100, @{closed})">100</a></li>
                                             </ul>
                                         </div>
                                     </td>

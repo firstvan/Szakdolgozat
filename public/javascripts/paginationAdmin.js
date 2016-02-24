@@ -5,32 +5,29 @@ $(document).ready(function(){
 });
 
 
-var index_page = function(orderd) {
-    $.get("/paginationAdmin?orderd=" + orderd, function(data){
+var index_page = function(orderd, closed) {
+    console.log(closed);
+    $.get("/paginationAdmin?orderd=" + orderd + "&admin=true" + "&closed=" + closed, function(data){
         $("#product_page").empty().append(data);
     });
 };
 
-function paging(page) {
+function paging(page, closed) {
     $.cookie("actual_page", page);
-    index_page(true);
+    index_page(true, closed);
 }
 
-function search(){
+function search(closed){
     $.cookie("search_item_name", $("#search_text").val());
     $.cookie("actual_page", 1);
-    index_page(true);
+    index_page(true, closed);
 }
 
-function setListSize(size) {
+function setListSize(size, closed) {
     $.cookie("actual_page", 1);
     $.cookie("list_size", size);
     $("#dropdown_label").text(size);
-    index_page(true);
-}
-
-function closeProduct(id) {
-
+    index_page(true, closed);
 }
 
 function show_confirm(id) {
@@ -41,14 +38,14 @@ function closeDialog(id) {
     $("#dialog_"+id).dialog("close");
 }
 
-function getItem(id, num) {
+function getItem(id, num, closed) {
     $.get("/updateCloseProd?id="+id+"&db="+num, function(data){
         closeDialog(id);
         if(data === '-1'){
             alert("hiba");
         }
         else {
-            index_page(true);
+            index_page(true, closed);
         }
     });
 }

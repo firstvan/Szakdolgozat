@@ -12,8 +12,9 @@ POST    /addorder                   controllers.Main.add
 GET     /products                   controllers.Main.products
 GET     /additem                    controllers.ProductManage.addProduct(itemNo :String, piece :Int, price :Int)
 GET     /orders                     controllers.OpenOrders.getInfromation(id: Int)
+GET     /closedOrder                controllers.ClosedOrders.getInfromation(id: Int)
 GET     /register                   controllers.Login.register
-GET     /pagination                 controllers.Pagination.index(orderd: Boolean, admin: Boolean = false)
+GET     /pagination                 controllers.Pagination.index(orderd: Boolean, admin: Boolean = false, closed: Boolean = false)
 GET     /deleteItem                 controllers.Pagination.deleteItem(prodNo: String)
 GET     /deleteOrder                controllers.OpenOrders.deleteOrder(id: Int)
 GET     /gettotal                   controllers.OpenOrders.getTotal
@@ -22,7 +23,7 @@ GET     /updatetime                 controllers.OpenOrders.updateTime(time: Stri
 GET     /getAdminOpens              controllers.Main.adminIndex
 GET     /closeOrder                 controllers.OpenOrders.closeOrder(id: Int)
 GET     /ordertoclose               controllers.OpenOrders.orderToClose(id: Int)
-GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean, admin: Boolean = true)
+GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean, admin: Boolean, closed: Boolean)
 GET     /updateCloseProd            controllers.OpenOrders.closeItem(id: String, db: Int)
 GET     /users                      controllers.UserManager.index
 GET     /modifyUser                 controllers.UserManager.modifyUser(id: Int)

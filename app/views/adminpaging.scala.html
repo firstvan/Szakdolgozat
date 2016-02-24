@@ -1,5 +1,5 @@
 @import model.Product
-@(products: List[Product], orderedMap :Map[String, (Int, Int)], actualPage: Int, listedElement: Int, maxPage: Int, elementSize: Int)
+@(products: List[Product], orderedMap :Map[String, (Int, Int)], actualPage: Int, listedElement: Int, maxPage: Int, elementSize: Int, closed: Boolean)
 
 @import scala.Int; var counter=1
 @import helper._
@@ -19,6 +19,7 @@
             });
     </script>
 
+
         <label id="p_size" style="display: none">@{products.size}</label>
         <table id="products_table" class="table table-striped table-bordered table-hover">
             <thead class="theadinverse">
@@ -27,7 +28,9 @@
                 <th>Információk</th>
                 <th>Rendelt darabszám</th>
                 <th>Kiszedve</th>
-                <th>#</th>
+                @if(!closed) {
+                    <th>#</th>
+                }
                 </tr>
             </thead>
             <tbody>
@@ -50,17 +53,21 @@
                         @{orderedMap(p.productnumber) ._2} db
                     }
                 </td>
-                <td>
-                    <span class="glyphicon glyphicon-new-window" onclick="show_confirm(@{p.productnumber})"></span>
-                    <div id="dialog_@{p.productnumber}" title="Biztos?" style="display: none;">
-                        Kiszedve: @orderedMap(p.productnumber)._1 db?
-                        <br/>
-                        <br/>
-                        <button onclick="getItem(@{p.productnumber}, @{orderedMap(p.productnumber)._1})" style="float: left;">Igen</button>
-                        <button onclick="closeDialog(@{p.productnumber})" style="float: right;">Nem</button>
+                @if(!closed) {
+                    <td>
+                        <span class="glyphicon glyphicon-new-window" onclick="show_confirm(@{p.productnumber})"></span>
+                        <div id="dialog_@{
+                            p.productnumber
+                        }" title="Biztos?" style="display: none ;">
+                            Kiszedve: @orderedMap(p.productnumber)._1 db?
+                            <br/>
+                            <br/>
+                            <button onclick="getItem(@{p.productnumber}, @{orderedMap(p.productnumber)._1}, @{closed})" style="float: left;">Igen</button>
+                            <button onclick="closeDialog(@{p.productnumber})" style="float: right ;">Nem</button>
 
-                    </div>
-                </td>
+                        </div>
+                    </td>
+                }
             </tr>
             @{counter=counter+1}
         }
@@ -71,5 +78,5 @@
 </div>
 
 @for(p <- products){
-    @adminModal(p, orderedMap(p.productnumber)._1)
+    @adminModal(p, orderedMap(p.productnumber)._1, closed)
 }

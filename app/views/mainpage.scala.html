@@ -19,7 +19,7 @@
             </tr>
             </thead>
             <tbody>
-            @for(i <- 0 to li.length - 1){
+            @for(i <- li.indices){
                 <tr class="clickable-row" data-href="orders?id=@li(i)._id">
                     <th scope="row">@(i+1)</th>
                     <td>@li(i)._id</td>

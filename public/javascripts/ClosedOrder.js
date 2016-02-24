@@ -1,7 +1,6 @@
 /**
  * Created by Firstvan on 2016. 02. 24..
  */
-
 $(document).ready(function () {
 
     var date = new Date();
