@@ -1,0 +1,30 @@
+@(username: String)(implicit req:RequestHeader)
+
+@main("Lezárt rendelések", 10, username){
+    <script src="@routes.Assets.versioned("javascripts/ClosedOrder.js")" ></script>
+    <div class="basicsetting">
+        <div class="page-header">
+            <h1>Lezárt rendelések</h1>
+        </div>
+        <div id="customer-table-container">
+            <div class="input-group closed-order">
+                <div class="input-group search_closed">
+                    <input id="search_text" type="text" class="form-control" placeholder="Vásárló neve">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" onclick="searchOrder()">Keresés</button>
+                    </span>
+                </div>
+                <div class="date-close" >
+                    <input name="date_of_start" id="date_of_start" type="text" style="text-align: center;"/> -
+                    <input name="date_of_end" id="date_of_end" type="text" style="text-align: center;"/>
+                    <button class="btn btn-default" onclick="refreshTableByDate()">
+                        Szürés
+                    </button>
+                </div>
+            </div>
+            <br/>
+            <div id="closed_table">
+            </div>
+        </div>
+    </div>
+}

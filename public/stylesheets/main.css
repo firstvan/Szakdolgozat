@@ -46,6 +46,15 @@ body {
         width: 100%;
         margin: 0 auto;
     }
+
+    .closed-order{
+        display: block;
+    }
+
+    .search_closed {
+        width: 100%;
+        padding-bottom: 10px;
+    }
 }
 
 @media screen and (min-width: 720px) {
@@ -53,12 +62,38 @@ body {
         width: 60%;
         margin: 0 auto;
     }
+
+    .closed-order{
+        display: flex;
+    }
+
+    .date-close {
+        position: absolute;
+        right: 0;
+    }
+
+    .search_closed {
+        width: 30%;
+    }
 }
 
 @media screen and (min-width: 1080px) {
     .basicform {
         width: 30%;
         margin: 0 auto;
+    }
+
+    .closed-order{
+        display: flex;
+    }
+
+    .search_closed {
+        width: 30%;
+    }
+
+    .date-close {
+        position: absolute;
+        right: 0;"
     }
 }
 

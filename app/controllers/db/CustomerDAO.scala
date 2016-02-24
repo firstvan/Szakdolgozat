@@ -50,13 +50,26 @@ object CustomerDAO extends ICustomerDAO{
   }
 
   override def getCustomerByName(name: String): Option[Customer] = {
-    val cust = collection.findOne(MongoDBObject("name" -> name))
+    val cust = collection.findOne(MongoDBObject("lowerName" -> name))
 
     if(cust.isEmpty){
       return None
     }
 
     Some(getCustomer(cust.get))
+  }
+
+  def getCustomersByName(name: String): List[Customer] = {
+    val nameWithRegex = "^" + name.toLowerCase() + ".*"
+    val cust = collection.find(MongoDBObject("lowerName" -> nameWithRegex.r))
+
+    val custList = new ListBuffer[Customer]
+
+    for(x <- cust){
+      custList += getCustomer(x)
+    }
+
+    custList.toList
   }
 
   /**

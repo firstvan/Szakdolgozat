@@ -2,8 +2,8 @@ package controllers.db
 
 import com.mongodb.casbah.commons.{MongoDBList, MongoDBObject}
 import com.mongodb.casbah.Imports._
-import model.{Orders, Item, Registration}
-import org.joda.time.DateTime
+import model.{OrderState, Orders, Item, Registration}
+import org.joda.time.{DateTimeComparator, DateTime}
 import org.joda.time.format.DateTimeFormat
 
 import scala.collection.mutable.ListBuffer
@@ -65,5 +65,50 @@ object RegistrationDAO extends IRegistrationDAO{
     val order = collection.findOne(MongoDBObject("_id" -> id)).get
 
     getRegistration(order)
+  }
+
+  /**
+    * Return a list of orders.
+    *
+    * @param name  name of customer
+    * @param start start of list date
+    * @param end   end of list date
+    * @return
+    */
+  override def getOrders(name: String, start: String, end: String): List[Orders] = {
+    val format = "yyyy-MM-dd"
+
+    val startDate = DateTime.parse(start, DateTimeFormat.forPattern(format))
+    val endDate = DateTime.parse(end, DateTimeFormat.forPattern(format))
+
+    val retList = new ListBuffer[Orders]()
+
+    if(!name.isEmpty) {
+      val users = CustomerDAO.getCustomersByName(name)
+      println(users)
+      for(user <- users){
+        val query = MongoDBObject("opened"-> OrderState.Closed, "customer"-> user._id)
+        val res = collection.find(query)
+        for(x <- res){
+          val ord = getRegistration(x)
+
+          if(ord.date_of_take.getMillis <= endDate.getMillis && ord.date_of_take.getMillis >= startDate.getMillis) {
+            retList += ord
+          }
+        }
+      }
+    } else {
+      val query = MongoDBObject("opened"-> OrderState.Closed)
+      val res = collection.find(query)
+      for(x <- res){
+        val ord = getRegistration(x)
+
+        if(ord.date_of_take.getMillis <= endDate.getMillis && ord.date_of_take.getMillis >= startDate.getMillis) {
+          retList += ord
+        }
+      }
+    }
+
+    retList.toList
   }
 }

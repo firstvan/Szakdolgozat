@@ -32,6 +32,8 @@ GET     /modifyCustomer             controllers.CustomerManager.modifyCustomer(i
 POST    /saveCustomer               controllers.CustomerManager.saveCustomer
 GET     /customerTable              controllers.CustomerManager.customerTable
 GET     /removeCustomer             controllers.CustomerManager.deleteCustomer(id: Int)
+GET     /closedOrders               controllers.ClosedOrders.index(all: Boolean)
+GET     /closedOrdersDate           controllers.ClosedOrders.getTable
 GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path
