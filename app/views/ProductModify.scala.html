@@ -1,0 +1,53 @@
+@(username: String, closed: Boolean)(implicit req: RequestHeader)
+
+@main("Termékek", 11, username){
+    <script src="@routes.Assets.versioned("javascripts/ProductModify.js")" ></script>
+    <div class="basicsetting">
+        <div class="panel panel-primary">
+            <div class="panel-heading" style="display: list-item;">
+                <div style="display: inline; float: left;">
+                    Keresés
+                </div>
+            </div>
+            <div class="panel-body">
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr >
+                            <td colspan="2">
+                                <div id="search_id" class="input-group" style="margin-bottom: 2%">
+                                    <input id="search_text" type="text" class="form-control" placeholder="Termék neve...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" onclick="search(@{closed})">Keresés</button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="float: left;">
+                                <button class="btn btn-primary" onclick="location.href ='modifyProductForm?id=0'">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                    Új vásárló
+                                </button>
+                            </td>
+                            <td style="float: right;">
+                                <div class="btn-group" style="float: middle;">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <label id="dropdown_label">5</label>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a href="#" onclick="setListSize(5, @{closed})">5</a></li>
+                                        <li><a href="#" onclick="setListSize(10, @{closed})">10</a></li>
+                                        <li><a href="#" onclick="setListSize(50, @{closed})">50</a></li>
+                                        <li><a href="#" onclick="setListSize(100, @{closed})">100</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="product_page">
+        </div>
+}

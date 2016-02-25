@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.db.ActualOrderDAO
+import controllers.db.{ProductDAO, ActualOrderDAO}
 import play.api.mvc.Controller
 
 
@@ -30,5 +30,37 @@ class ProductManage extends Controller with Secured{
     Ok("0")
   }
 
+  def index = withAuth { username => implicit request =>
 
+    Ok(views.html.ProductModify(username, true))
+  }
+
+  def modifyIndex(id: Int) = withAuth {username => implicit request =>
+    var product: model.Product = null
+    if(id != 0){
+      product = ProductDAO.getProductByItemNo(id.toString).get
+    }
+    Ok(views.html.ProductModifyForm(username, product))
+  }
+
+  def updateProduct = withAuth {username => implicit request =>
+    var ok = 0
+
+    val map : Map[String,Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
+
+    val id: Seq[String] = map.getOrElse("id", List[String]())
+    val prodnum: Seq[String] = map.getOrElse("prodnum", List[String]())
+    val ean: Seq[String] = map.getOrElse("ean", List[String]())
+    val name: Seq[String] = map.getOrElse("name", List[String]())
+    val price: Seq[String] = map.getOrElse("price", List[String]())
+    val stock: Seq[String] = map.getOrElse("stock", List[String]())
+
+    if(id.head.toInt == 0){
+      ok = ProductDAO.insertItem(prodnum.head, ean.head, name.head, price.head.toInt, stock.head.toInt)
+    } else {
+      ProductDAO.updateItem(prodnum.head, ean.head, name.head, price.head.toInt, stock.head.toInt)
+    }
+
+    Ok(ok.toString)
+  }
 }

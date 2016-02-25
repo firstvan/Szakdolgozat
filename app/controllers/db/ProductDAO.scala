@@ -71,4 +71,64 @@ object ProductDAO extends IProductDAO {
     }
   }
 
+  /**
+    * Update product by params
+    *
+    * @param productNumber
+    * @param ean
+    * @param name
+    * @param price
+    * @param stock
+    */
+  override def updateItem(productNumber: String, ean: String, name: String, price: Int, stock: Int): Unit = {
+    val query = MongoDBObject("productnumber" -> productNumber)
+
+    collection.findAndModify(query, $set("ean" -> ean, "name" -> name, "lowerName"-> name.toLowerCase, "ar"->price, "stock" -> stock))
+  }
+
+  /**
+    * Insert a product by params
+    *
+    * @param productNumber
+    * @param ean
+    * @param name
+    * @param price
+    * @param stock
+    * @return
+    */
+  override def insertItem(productNumber: String, ean: String, name: String, price: Int, stock: Int): Int = {
+    val prodList = getAllProdNumber
+    if(prodList.contains(productNumber)){
+      return 1
+    }
+    val newProduct = MongoDBObject(
+      "productnumber" -> productNumber,
+      "ean" -> ean,
+      "name" -> name,
+      "lowerName" -> name.toLowerCase,
+      "ar" -> price,
+      "stock" -> stock,
+      "rabat" -> "nincs",
+      "r1" -> 0,
+      "r2" -> 0,
+      "r3" -> 0,
+      "rdb1" -> 0,
+      "rdb2" -> 0,
+      "rdb3" -> 0
+    )
+
+    collection.insert(newProduct)
+    0
+  }
+
+  private def getAllProdNumber : List[String] = {
+    val res = collection.find()
+    val result = new ListBuffer[String]
+
+    for(x <- res){
+      result += getProduct(x).productnumber
+    }
+
+    result.toList
+  }
 }

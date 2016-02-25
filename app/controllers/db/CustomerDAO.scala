@@ -50,7 +50,7 @@ object CustomerDAO extends ICustomerDAO{
   }
 
   override def getCustomerByName(name: String): Option[Customer] = {
-    val cust = collection.findOne(MongoDBObject("lowerName" -> name))
+    val cust = collection.findOne(MongoDBObject("lowerName" -> name.toLowerCase))
 
     if(cust.isEmpty){
       return None

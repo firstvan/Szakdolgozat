@@ -1,0 +1,68 @@
+@import model.Product
+@(username: String, product: Product)(implicit req: RequestHeader)
+
+@main("Termékek", 6, username){
+    <script src="@routes.Assets.versioned("javascripts/ProductModifyForm.js")" ></script>
+    <div class="basicform">
+        <div class="input-group" style="width: 100%;">
+            <label>Termékszám</label>
+            @if(product == null){
+                <input id="prodnum" type="number" class="form-control" placeholder="Termékszám" aria-describedby="basic-addon1">
+            } else {
+                <input id="prodnum" type="number" class="form-control" placeholder="Termékszám" value="@{product.productnumber}" aria-describedby="basic-addon1">
+            }
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Vonalkód</label>
+            @if(product == null){
+                <input id="ean" type="number" class="form-control" placeholder="Vonalkód" aria-describedby="basic-addon1">
+            } else {
+                <input id="ean" type="number" class="form-control" placeholder="Vonalkód" value="@{product.ean}" aria-describedby="basic-addon1">
+                }
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Termék név</label>
+            @if(product == null){
+                <input id="prod_name" type="text" class="form-control" placeholder="Termék név" aria-describedby="basic-addon1">
+            } else {
+                <input id="prod_name" type="text" class="form-control" placeholder="Termék név" value="@{product.name}" aria-describedby="basic-addon1">
+                }
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Ár</label>
+            <div style="display: inherit;">
+            @if(product == null){
+                <input id="prod_price" type="number" class="form-control" placeholder="Ár" aria-describedby="basic-addon1">
+            } else {
+                <input id="prod_price" type="number" class="form-control" placeholder="Ár" value="@{product.price}" aria-describedby="aria_1">
+                }
+            <span class="input-group-addon" id="aria_1">ft</span>
+            </div>
+        </div>
+        <br/>
+        <div class="input-group" style="width: 100%;">
+            <label>Készlet</label>
+            <div style="display: inherit;">
+            @if(product == null){
+                <input id="prod_stock" type="number" class="form-control" placeholder="Készlet" aria-describedby="basic-addon1">
+            } else {
+                <input id="prod_stock" type="number" class="form-control" placeholder="Készlet" value="@{product.stock}" aria-describedby="aria_2">
+            }
+            <span class="input-group-addon" id="aria_2">db</span>
+            </div>
+        </div>
+        <br/>
+        <div>
+        @if(product != null) {
+            <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_product(@{product.productnumber})">Mentés</button>
+        } else {
+            <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_product(0)">Mentés</button>
+        }
+        </div>
+        <div id="alert_dialog" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Tölsd ki a(z)<div id="nameofinput" style="padding-left: 2px; padding-right: 2px;"></div> mezőt! </div>
+        <div id="alert_dialog_pass" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Jelszók nem egyeznek meg!</div>
+    </div>
+}
