@@ -27,6 +27,7 @@ GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean
 GET     /updateCloseProd            controllers.OpenOrders.closeItem(id: String, db: Int)
 GET     /users                      controllers.UserManager.index
 GET     /modifyUser                 controllers.UserManager.modifyUser(id: Int)
+GET     /modifyAccount              controllers.UserManager.modifyAccount
 POST    /saveUser                   controllers.UserManager.saveUser
 GET     /customers                  controllers.CustomerManager.index
 GET     /modifyCustomer             controllers.CustomerManager.modifyCustomer(id: Int)

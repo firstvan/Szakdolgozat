@@ -1,7 +1,7 @@
 @import model.User
-@(username: String, user: User)(implicit req: RequestHeader)
+@(username: String, user: User, id: Int = 8)(implicit req: RequestHeader)
 
-@main("Felhasználók", 8, username){
+@main("Felhasználók", id, username){
     <script src="@routes.Assets.versioned("javascripts/UserModify.js")" ></script>
 <div class="basicform">
     <div class="input-group" style="width: 100%;">

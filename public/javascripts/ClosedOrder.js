@@ -3,6 +3,7 @@
  */
 $(document).ready(function () {
 
+
     var date = new Date();
 
    $("#date_of_start").datepicker({

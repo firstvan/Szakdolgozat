@@ -21,15 +21,22 @@ object Main {
     val returnList = ListBuffer[TableLook]()
     for(i <- li){
       var name = ""
+      var found  = false
       if(map.contains(i.customer)){
         name = map.get(i.customer).get
       } else {
-        name = CustomerDAO.getCustomerById(i.customer).get.name
-        map += ((i.customer, name))
+        val usr = CustomerDAO.getCustomerById(i.customer)
+        if(usr.isDefined){
+          found = true
+          name = usr.get.name
+          map += ((i.customer, name))
+        }
       }
-      val f = DateTimeFormat.forPattern("yyyy.MM.dd")
-      val date  = f.print(i.date_of_take)
-      returnList.append(new TableLook(i._id, name, date, i.total))
+      if(found) {
+        val f = DateTimeFormat.forPattern("yyyy.MM.dd")
+        val date = f.print(i.date_of_take)
+        returnList.append(new TableLook(i._id, name, date, i.total))
+      }
     }
 
     returnList.toList

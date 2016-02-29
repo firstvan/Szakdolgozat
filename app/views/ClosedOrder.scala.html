@@ -1,6 +1,6 @@
-@(username: String)(implicit req:RequestHeader)
+@(username: String, all: Int)(implicit req:RequestHeader)
 
-@main("Lezárt rendelések", 10, username){
+@main("Lezárt rendelések", all, username){
     <script src="@routes.Assets.versioned("javascripts/ClosedOrder.js")" ></script>
     <div class="basicsetting">
         <div class="page-header">

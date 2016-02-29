@@ -14,11 +14,22 @@ import scala.collection.mutable.ListBuffer
 class ClosedOrders extends Controller with Secured {
 
   def index(all: Boolean) = withAuth { username => implicit request =>
+    var menu = 10
+    if(!all){
+      menu = 20
+    }
 
-    Ok(views.html.ClosedOrder(username))
+    Ok(views.html.ClosedOrder(username, menu))
   }
 
   def getTable = withAuth{ username => implicit request =>
+    val usr = UserDAO.getUserByUserName(username)
+
+    var id = 0
+    if(usr.get.accountType.equals("Manager")){
+      id = usr.get._id
+    }
+
     val name_cookie = request.cookies.get("search_name")
     var name = ""
     if (name_cookie.isDefined) {
@@ -37,19 +48,25 @@ class ClosedOrders extends Controller with Secured {
       end = end_cookie.get.value
     }
 
-    val list = tableLook(RegistrationDAO.getOrders(name, start, end))
+    val list = tableLook(RegistrationDAO.getOrders(name, start, end, id))
 
     Ok(views.html.ClosedOrderTable(list))
   }
 
   def getInfromation(id: Int) = withAuth { username => implicit request =>
+    val usr = UserDAO.getUserByUserName(username)
+    var menu = 10
+    if(usr.get.accountType.equals("Manager")){
+      menu = 2
+    }
+
     val order = RegistrationDAO.getOrderById(id)
     val cust = CustomerDAO.getCustomerById(order.customer)
     val f = DateTimeFormat.forPattern("yyyy.MM.dd")
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
     val ktar = UserDAO.getUserByUserID(order.sales_man_id)
-    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, true)).withCookies(new Cookie("orderid", id.toString))
+    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, true, menu)).withCookies(new Cookie("orderid", id.toString))
   }
 
   private def tableLook(li: List[Orders]) : List[TableLook] ={

@@ -18,10 +18,17 @@
             </li>
             @if(menuBarType == 2 || menuBarType == 4) {
                 <li><a href="addorder">Új rendelés</a></li>
+                <li><a href="closedOrders?all=false">Véglegesített rendelések</a></li>
+            }
+
+            @if(menuBarType == 20) {
+                <li><a href="addorder">Új rendelés</a></li>
+                <li class="active noneclickable"><a href="closedOrders?all=false">Véglegesített rendelések</a></li>
             }
 
             @if(menuBarType == 3) {
-             <li class="active noneclickable"><a href="addorder">Új rendelés</a></li>
+                <li class="active noneclickable"><a href="addorder">Új rendelés</a></li>
+                <li><a href="closedOrders?all=false">Véglegesített rendelések</a></li>
             }
 
             @if(menuBarType == 6) {
@@ -63,28 +70,41 @@
             <li><a class="noneclickable" style="margin-right: 5px;" href="">Kijelentkezés</a></li>
             } else {
                 @menuBarType match {
-                    case 3 => {<li><a href="main">Vissza</a></li>}
-                    case 4 => {<li><a href="addorder">Vissza</a></li>}
+                    case 3 => {
+                        <li><a href="modifyAccount">Beállítások</a></li>
+                        <li><a href="main">Vissza</a></li>
+                    }
+                    case 4 => {
+                        <li><a href="modifyAccount">Beállítások</a></li>
+                        <li><a href="addorder">Vissza</a></li>
+                    }
                     case 6 => {
                         <li><a href="closedOrders?all=true"><span class="glyphicon glyphicon-lock"></span>
                             Véglegesített rendelések</a>
                         </li>
+                        <li><a href="modifyAccount">Beállítások</a></li>
                     }
                     case 7 => {
                         <li><a href="closedOrders?all=true"><span class="glyphicon glyphicon-lock"></span>
                             Véglegesített rendelések</a>
                         </li>
+                        <li><a href="modifyAccount">Beállítások</a></li>
                     }
                     case 9 => {
                         <li><a href="closedOrders?all=true"><span class="glyphicon glyphicon-lock"></span>Véglegesített rendelések</a></li>
+                        <li><a href="modifyAccount">Beállítások</a></li>
                     }
                     case 10 => {
                         <li class="active noneclickable"><a href="closedOrders?all=true"><span class="glyphicon glyphicon-lock"></span>Véglegesített rendelések</a></li>
+                        <li><a href="modifyAccount">Beállítások</a></li>
                     }
                     case 11 => {
                         <li><a href="closedOrders?all=true"><span class="glyphicon glyphicon-lock"></span>Véglegesített rendelések</a></li>
+                        <li><a href="modifyAccount">Beállítások</a></li>
                     }
-                    case _ => {}
+                    case _ => {
+                        <li><a href="modifyAccount">Beállítások</a></li>
+                    }
                 }
                 <li><a href="logout" style="margin-right: 5px;">Kijelentkezés</a></li>
             }

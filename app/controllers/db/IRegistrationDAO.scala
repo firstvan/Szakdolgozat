@@ -16,5 +16,5 @@ trait IRegistrationDAO {
     * @param end end of list date
     * @return
     */
-  def getOrders(name: String, start: String, end: String):List[Orders]
+  def getOrders(name: String, start: String, end: String, id: Int):List[Orders]
 }

@@ -26,6 +26,9 @@ function successfnc(data){
     if(data === "-1"){
         $("#alert_dialog").css("display", "block");
     } else {
-        window.location.replace("/users");
+        if(data==="2")
+            window.location.replace("/users");
+        else
+            window.location.replace("/main");
     }
 }

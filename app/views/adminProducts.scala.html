@@ -1,7 +1,7 @@
 @import model.Orders
-@(user: String, order: Orders, customer_name: String, date: String, delivery: String, kuser: String, closed: Boolean)(implicit req: RequestHeader)
+@(user: String, order: Orders, customer_name: String, date: String, delivery: String, kuser: String, closed: Boolean, menu: Int = 6)(implicit req: RequestHeader)
 
-@main(customer_name + " rendelése", 6, user){
+@main(customer_name + " rendelése", menu, user){
     <script>
             $(document).ready(function(){
                 index_page(true, @{closed});

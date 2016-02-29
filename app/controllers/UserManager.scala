@@ -25,6 +25,16 @@ class UserManager extends Controller with Secured {
     }
   }
 
+  def modifyAccount = withAuth { username => implicit request =>
+      val user = UserDAO.getUserByUserName(username)
+
+      if(user.get.accountType.equals("Manager")){
+        Ok(views.html.UserModify(username, user.get, user.get._id))
+      } else {
+        Ok(views.html.UserModify(username, user.get))
+      }
+  }
+
   def saveUser() = withAuth {username => implicit request =>
     val map : Map[String,Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
 
@@ -32,7 +42,9 @@ class UserManager extends Controller with Secured {
     val usrname: Seq[String] = map.getOrElse("username", List[String]())
     val fullname: Seq[String] = map.getOrElse("fullname", List[String]())
     val pass: Seq[String] = map.getOrElse("pass", List[String]())
+    val usr = UserDAO.getUserByUserID(id.head.toInt)
     var retid = id.head
+
 
     if(id.head.toInt == 0) {
       val succ = UserDAO.insertUser(usrname.head, fullname.head, pass.head.bcrypt)
@@ -40,7 +52,12 @@ class UserManager extends Controller with Secured {
         retid = "-1"
       }
     } else {
-      if (pass.isEmpty) {
+      if(usrname.head.equals(username)){
+        retid = "1"
+      } else {
+        retid = "2"
+      }
+      if (pass.head.isEmpty) {
         UserDAO.saveUser(id.head.toInt, usrname.head, fullname.head, "")
       } else {
         UserDAO.saveUser(id.head.toInt, usrname.head, fullname.head, pass.head.bcrypt)

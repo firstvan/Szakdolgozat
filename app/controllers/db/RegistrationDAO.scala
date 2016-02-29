@@ -75,7 +75,7 @@ object RegistrationDAO extends IRegistrationDAO{
     * @param end   end of list date
     * @return
     */
-  override def getOrders(name: String, start: String, end: String): List[Orders] = {
+  override def getOrders(name: String, start: String, end: String, id: Int): List[Orders] = {
     val format = "yyyy-MM-dd"
 
     val startDate = DateTime.parse(start, DateTimeFormat.forPattern(format))
@@ -85,9 +85,11 @@ object RegistrationDAO extends IRegistrationDAO{
 
     if(!name.isEmpty) {
       val users = CustomerDAO.getCustomersByName(name)
-      println(users)
       for(user <- users){
-        val query = MongoDBObject("opened"-> OrderState.Closed, "customer"-> user._id)
+        var query = MongoDBObject("opened"-> OrderState.Closed, "customer"-> user._id)
+        if(id != 0) {
+          query = MongoDBObject("opened"-> OrderState.Closed, "customer"-> user._id, "sales_man_id" -> id)
+        }
         val res = collection.find(query)
         for(x <- res){
           val ord = getRegistration(x)
@@ -98,7 +100,11 @@ object RegistrationDAO extends IRegistrationDAO{
         }
       }
     } else {
-      val query = MongoDBObject("opened"-> OrderState.Closed)
+      var query = MongoDBObject("opened"-> OrderState.Closed)
+
+      if(id != 0) {
+        query = MongoDBObject("opened"-> OrderState.Closed, "sales_man_id" -> id)
+      }
       val res = collection.find(query)
       for(x <- res){
         val ord = getRegistration(x)
