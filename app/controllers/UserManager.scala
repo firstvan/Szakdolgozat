@@ -10,7 +10,7 @@ import com.github.t3hnar.bcrypt._
 class UserManager extends Controller with Secured {
 
   def index = withAuth { username => implicit request =>
-    val list = UserDAO.getUserList("Manager")
+    val list = UserDAO.getAllUser()
 
     Ok(views.html.UserManager(username, list))
   }
@@ -42,12 +42,14 @@ class UserManager extends Controller with Secured {
     val usrname: Seq[String] = map.getOrElse("username", List[String]())
     val fullname: Seq[String] = map.getOrElse("fullname", List[String]())
     val pass: Seq[String] = map.getOrElse("pass", List[String]())
+    val t: Seq[String] = map.getOrElse("type", List[String]())
+
     val usr = UserDAO.getUserByUserID(id.head.toInt)
     var retid = id.head
 
 
     if(id.head.toInt == 0) {
-      val succ = UserDAO.insertUser(usrname.head, fullname.head, pass.head.bcrypt)
+      val succ = UserDAO.insertUser(usrname.head, fullname.head, pass.head.bcrypt, t.head)
       if(!succ){
         retid = "-1"
       }

@@ -29,7 +29,7 @@ object UserDAO extends IUserDAO{
     collection.save(dbObject)
   }
 
-  override def insertUser(usrname: String, fullname: String, pass: String): Boolean = {
+  override def insertUser(usrname: String, fullname: String, pass: String, t: String): Boolean = {
 
     val list = getUserList("Manager")
 
@@ -46,7 +46,7 @@ object UserDAO extends IUserDAO{
       "username" -> usrname,
       "fullname" -> fullname,
       "passwordHash" -> pass,
-      "accountType" -> "Manager"
+      "accountType" -> t
     )
 
     collection.insert(newUser)
@@ -128,6 +128,18 @@ object UserDAO extends IUserDAO{
     val id = item.get.as[Int]("_id")
 
     id + 1
+  }
+
+  override def getAllUser(): List[User] = {
+    val res = collection.find()
+
+    val returnList = ListBuffer[User]()
+
+    for(p <- res){
+      returnList += getUser(p)
+    }
+
+    returnList.toList.sortWith((a,b) => if (a.fullname < b.fullname) true; else false)
   }
 }
 

@@ -13,10 +13,17 @@ function save_user(id) {
         }
     }
 
+    var t = $("#type").val();
+
+    if(id == 0 && t === ""){
+        $("#noType").css("display", "block");
+        return 0
+    }
+
     $.ajax({
         type: "POST",
         url: "/saveUser",
-        data: {id: id, username: usr, fullname: fname, pass: $("#pass").val()},
+        data: {id: id, username: usr, fullname: fname, pass: $("#pass").val(), type: t},
         success: successfnc,
         dataType: "text"
     });

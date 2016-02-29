@@ -33,5 +33,7 @@ trait IUserDAO {
     * @param fullname
     * @param pass
     */
-  def insertUser(usrname: String, fullname: String, pass: String): Boolean
+  def insertUser(usrname: String, fullname: String, pass: String, t: String): Boolean
+
+  def getAllUser() : List[User]
 }

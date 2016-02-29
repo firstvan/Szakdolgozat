@@ -22,6 +22,19 @@
         }
     </div>
     <br/>
+    @if(user == null) {
+        <div class="input-group" style="width: 100% ;">
+            <label>Tipus</label>
+            <div style="width: 100%;">
+                <select class="form-control" id="type">
+                    <option value="">Válasszon</option>
+                    <option value="Manager">Üzletkötő</option>
+                    <option value="admin">Admin</option>
+                </select>
+        </div>
+        <br/>
+        <br/>
+    }
     <div class="input-group" style="width: 100%;">
         <label>Jelszó</label>
         <input id="pass" type="password" class="form-control" placeholder="Jelszó" aria-describedby="basic-addon1">
@@ -41,5 +54,6 @@
     </div>
     <div id="alert_dialog" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Foglalt felhasználó név</div>
     <div id="alert_dialog_pass" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Jelszók nem egyeznek meg!</div>
+    <div id="noType" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Nincs tipus megadva!</div>
 </div>
 }
