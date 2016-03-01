@@ -179,4 +179,40 @@ object CustomerDAO extends ICustomerDAO{
     val query = MongoDBObject("_id" -> id)
     collection.remove(query)
   }
+
+  /**
+    * Get customers list.
+    *
+    * @return list of cusomters.
+    */
+  override def getCustomers(): List[Customer] = {
+    val res = collection.find()
+
+    val result = new ListBuffer[Customer]()
+
+    for(x <- res){
+      result += getCustomer(x)
+    }
+
+    result.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
+  }
+
+  /**
+    * Return list of customer by code.
+    *
+    * @param code
+    * @return
+    */
+  override def getCustomerListByCode(code: Int): List[Customer] = {
+    val query = MongoDBObject("code" -> code)
+
+    val li = collection.find(query)
+    val result = new ListBuffer[Customer]()
+
+    for(x <- li){
+      result += getCustomer(x)
+    }
+
+    result.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
+  }
 }

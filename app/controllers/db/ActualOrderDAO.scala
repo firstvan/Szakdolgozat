@@ -60,11 +60,11 @@ object ActualOrderDAO extends IActualOrderDAO{
   /**
     * This method will add a new record to orders table.
     */
-  override def addNewOrder(salesManUserName: String, customerName : String, delivery: String): Int = {
+  override def addNewOrder(salesManUserName: String, code : String, delivery: String): Int = {
     val orderNum = getOrderNum("orders")
 
     val usr = UserDAO.getUserByUserName(salesManUserName).get._id
-    val cust = CustomerDAO.getCustomerByName(customerName).get._id
+    val cust = CustomerDAO.getCustomerListByCode(code.toInt).head._id
 
     val newOrder = MongoDBObject(
       "_id" -> orderNum,

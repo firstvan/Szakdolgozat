@@ -40,6 +40,8 @@ GET     /productModify              controllers.ProductManage.index
 GET     /pagingModify               controllers.Pagination.index(orderd: Boolean = false, admin: Boolean = false, closed: Boolean = false, modify: Boolean = true)
 GET     /modifyProductForm          controllers.ProductManage.modifyIndex(id: Int)
 POST    /updateProduct              controllers.ProductManage.updateProduct
+GET     /getCustomersByName         controllers.CustomerManager.getCustomersByName(name: String)
+GET     /getCustomersByCode         controllers.CustomerManager.getCustomersByCode(code: String)
 
 GET     /test                       controllers.Pagination.test
 

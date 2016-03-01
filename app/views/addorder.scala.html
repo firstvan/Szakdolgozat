@@ -1,4 +1,5 @@
-@(user: String, liCustName: List[String])(implicit req: RequestHeader)
+@import model.Customer
+@(user: String, liCustName: List[Customer])(implicit req: RequestHeader)
 
 @import helper._
 
@@ -8,38 +9,48 @@
     <div class="page-header">
         <h1>Rendelés alapadatok</h1>
     </div>
-
-    @form(routes.Main.add, 'onsubmit -> "return validate();", 'onclick -> "clearCookies();"){
         <table class="table" style="width: 100%;">
             <tbody>
-                <tr>
-                    <td style="width: 30%;">Vevő neve:</td>
-                    <td style="width: 70%;">
-                        <input name="custName" id="custName" type="text" list="customers" style="width: 100%;"/>
-                    </td>
-                </tr>
                 <tr>
                     <td style="width: 30%;">Kiszállítás dátuma:</td>
                     <td style="width: 70%;"> <input name="shippingDate" id="shippingDate" type="text" style="width: 100%;"/>
                     </td>
                 </tr>
-
+                <tr>
+                    <td style="width: 30%;">Vevő neve:</td>
+                    <td style="width: 70%;">
+                        <table id="customertable" style="width: 100%;" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <th style="width: 20%;">
+                                    <input id="code" placeholder="Kód" type="text" />
+                                </th>
+                                <th style="width: 80%;">
+                                    <input id="name" placeholder="Név" type="text" style="width: 100%;"/>
+                                </th>
+                            </thead>
+                            <tbody id="bodyoftable">
+                                @for(i <- liCustName.indices.filter(_ < 5)){
+                                    <tr id="@liCustName(i).code">
+                                        <td style="width: 20%;">@{liCustName(i).code}</td>
+                                        <td style="width: 80%;">@{liCustName(i).name}</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2">
-                        <button type="submit" class="btn btn-default" style="width: 50%;">
+                        <div id="errordiv" class="alert alert-danger" style="margin: 2px auto;margin-bottom: 5px; display: None; width: 50%;" role="alert">
+                            Nincs vásárló kiválasztva.
+                        </div>
+                        <button type="submit" class="btn btn-default" style="width: 50%;" onclick="addOrder();">
                             Rendelés
                         </button>
                     </td>
                 </tr>
             </tbody>
         </table>
-    }
 
 </div>
-
-<datalist id="customers">
-    @for(i <- 0 to liCustName.length-1){
-      <option value="@liCustName(i)"></option>
-    }
-</datalist>
 }

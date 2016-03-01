@@ -45,13 +45,6 @@ object Main {
 
 class Main extends Controller with Secured{
 
-  val newOrder = Form(
-    tuple(
-      "custName" -> text,
-      "shippingDate" -> text
-    )
-  )
-
   def index = withAuth { username => implicit request =>
     if(Main.user == null){
       Main.user =  UserDAO.getUserByUserName(username).get
@@ -71,21 +64,23 @@ class Main extends Controller with Secured{
   }
 
   def addorder = withAuth { username => implicit request =>
-    val custnames = CustomerDAO.getCustomerNames()
+    val custnames = CustomerDAO.getCustomers()
     Ok(views.html.addorder(username, custnames))
   }
 
 
   def add = withAuth { username => implicit request =>
-    newOrder.bindFromRequest.fold(
-      formWithErrors => BadRequest("Formális hiba"),
-      customer => {
-        val orderID = ActualOrderDAO.addNewOrder(username, customer._1 , customer._2)
+    val map: Map[String, Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
 
-        Redirect(routes.Main.products).withCookies(new Cookie("customername", customer._1.replace(" ", "%"))
-          , new Cookie("orderid", orderID.toString))
-      }
-    )
+    val code: Seq[String] = map.getOrElse("code", List[String]())
+    val date: Seq[String] = map.getOrElse("date", List[String]())
+
+    val orderID = ActualOrderDAO.addNewOrder(username, code.head, date.head)
+
+    val customername = CustomerDAO.getCustomerListByCode(code.head.toInt).head.name
+
+    Ok("/products").withCookies(new Cookie("customername", customername.replace(" ", "%"))
+      , new Cookie("orderid", orderID.toString))
   }
 
   def products = withAuth { username => implicit request =>

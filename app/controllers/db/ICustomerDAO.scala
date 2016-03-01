@@ -41,4 +41,17 @@ trait ICustomerDAO {
     * @param id
     */
   def deleteCustomer(id: Int): Unit
+
+  /**
+    * Get customers list.
+    * @return list of cusomters.
+    */
+  def getCustomers() : List[Customer]
+
+  /**
+    * Return list of customer by code.
+    * @param code
+    * @return
+    */
+  def getCustomerListByCode(code: Int) : List[Customer]
 }

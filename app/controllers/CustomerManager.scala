@@ -87,4 +87,21 @@ class CustomerManager extends Controller with Secured {
 
     (p2.toList, custList.size)
   }
+
+  def getCustomersByName(name: String) = withAuth {username => implicit request =>
+    val list = CustomerDAO.getCustomerList(name)
+
+    Ok(views.html.addOrderUserTable(list))
+  }
+
+  def getCustomersByCode(code: String) = withAuth {username => implicit request =>
+    var list :List[Customer] = null
+    if(code.isEmpty){
+      list = CustomerDAO.getCustomerList("")
+    } else {
+      list = CustomerDAO.getCustomerListByCode(code.toInt)
+    }
+
+    Ok(views.html.addOrderUserTable(list))
+  }
 }

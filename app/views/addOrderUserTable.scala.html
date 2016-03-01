@@ -1,0 +1,9 @@
+@import model.Customer
+@(li: List[Customer])
+
+@for(i <- li.indices.filter(_ < 5)){
+    <tr id="@li(i).code">
+        <td style="width: 20%;">@{li(i).code}</td>
+        <td style="width: 80%;">@{li(i).name}</td>
+    </tr>
+}
