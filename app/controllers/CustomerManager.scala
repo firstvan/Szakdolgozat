@@ -14,12 +14,18 @@ class CustomerManager extends Controller with Secured {
   }
 
   def modifyCustomer(id: Int) = withAuth{ username => implicit request =>
+    val tUser = UserDAO.getUserByUserName(username).get.accountType.equals("Manager")
+
     if(id == 0){
-      Ok(views.html.CustomerModify(username, null))
+      if(tUser) {
+        Ok(views.html.CustomerModify(username, null, tUser, 10))
+      } else {
+        Ok(views.html.CustomerModify(username, null, tUser))
+      }
     } else {
       val cust = CustomerDAO.getCustomerById(id)
 
-      Ok(views.html.CustomerModify(username, cust.get))
+      Ok(views.html.CustomerModify(username, cust.get, manager = false))
     }
   }
 
