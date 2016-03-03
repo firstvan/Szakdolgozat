@@ -1,7 +1,7 @@
 @import model.Customer
 @(username: String, customers: List[Customer])(implicit req: RequestHeader)
 
-@main("Vásárlók", 9, username){
+@main("Vásárlók", 6, username){
     <script src="@routes.Assets.versioned("javascripts/CustomerManager.js")" ></script>
     <div class="basicsetting">
         <div class="page-header">

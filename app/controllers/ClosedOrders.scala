@@ -14,9 +14,9 @@ import scala.collection.mutable.ListBuffer
 class ClosedOrders extends Controller with Secured {
 
   def index(all: Boolean) = withAuth { username => implicit request =>
-    var menu = 10
+    var menu = 7
     if(!all){
-      menu = 20
+      menu = 2
     }
 
     Ok(views.html.ClosedOrder(username, menu))
@@ -55,7 +55,7 @@ class ClosedOrders extends Controller with Secured {
 
   def getInfromation(id: Int) = withAuth { username => implicit request =>
     val usr = UserDAO.getUserByUserName(username)
-    var menu = 10
+    var menu = 6
     if(usr.get.accountType.equals("Manager")){
       menu = 2
     }
@@ -66,7 +66,7 @@ class ClosedOrders extends Controller with Secured {
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
     val ktar = UserDAO.getUserByUserID(order.sales_man_id)
-    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, true, menu)).withCookies(new Cookie("orderid", id.toString))
+    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, closed = true, menu)).withCookies(new Cookie("orderid", id.toString))
   }
 
   private def tableLook(li: List[Orders]) : List[TableLook] ={

@@ -1,5 +1,5 @@
 @import model.User
-@(username: String, user: User, id: Int = 8)(implicit req: RequestHeader)
+@(username: String, user: User, id: Int = 6)(implicit req: RequestHeader)
 
 @main("Felhasználók", id, username){
     <script src="@routes.Assets.versioned("javascripts/UserModify.js")" ></script>

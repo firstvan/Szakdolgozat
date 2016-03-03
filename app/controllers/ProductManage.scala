@@ -32,7 +32,7 @@ class ProductManage extends Controller with Secured{
 
   def index = withAuth { username => implicit request =>
 
-    Ok(views.html.ProductModify(username, true))
+    Ok(views.html.ProductModify(username, closed = true))
   }
 
   def modifyIndex(id: Int) = withAuth {username => implicit request =>
