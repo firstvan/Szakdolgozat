@@ -1,6 +1,17 @@
 @import model.Customer
 @(customers: List[Customer], lSize: Int, actualPage: Int, elementSize: Int)
 
+<script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $("#customers-table").find("tr").each(function(i, e){
+                $(e).children('td:not(:last)').click(function()
+                {
+                    window.document.location = $(this).closest("tr").data("href");
+                });
+            });
+        });
+</script>
+
 <table id="customers-table" class="table table-striped table-bordered table-hover">
     <thead class="theadinverse">
         <tr>

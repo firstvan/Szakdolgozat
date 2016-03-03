@@ -12,27 +12,27 @@
         <table class="table" style="width: 100%;">
             <tbody>
                 <tr>
-                    <td style="width: 30%;">Kiszállítás dátuma:</td>
-                    <td style="width: 70%;"> <input name="shippingDate" id="shippingDate" type="text" style="width: 100%;"/>
+                    <td style="width: 20%;">Kiszállítás dátuma:</td>
+                    <td style="width: 80%;"> <input name="shippingDate" id="shippingDate" type="text" style="width: 100%;"/>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 30%;">Vevő neve:</td>
-                    <td style="width: 70%;">
+                    <td style="width: 20%;">Vevő neve:</td>
+                    <td style="width: 80%;">
                         <table id="customertable" style="width: 100%;" class="table table-striped table-bordered table-hover">
                             <thead>
-                                <th style="width: 20%;">
-                                    <input id="code" placeholder="Kód" type="text" />
+                                <th class="table_left">
+                                    <input id="code" placeholder="Kód" type="text" style="width: 100%;"/>
                                 </th>
-                                <th style="width: 80%;">
+                                <th class="table_right">
                                     <input id="name" placeholder="Név" type="text" style="width: 100%;"/>
                                 </th>
                             </thead>
                             <tbody id="bodyoftable">
                                 @for(i <- liCustName.indices.filter(_ < 5)){
                                     <tr id="@liCustName(i).code">
-                                        <td style="width: 20%;">@{liCustName(i).code}</td>
-                                        <td style="width: 80%;">@{liCustName(i).name}</td>
+                                        <td class="table_left">@{liCustName(i).code}</td>
+                                        <td class="table_right">@{liCustName(i).name}</td>
                                     </tr>
                                 }
                             </tbody>

@@ -141,6 +141,10 @@ object UserDAO extends IUserDAO{
 
     returnList.toList.sortWith((a,b) => if (a.fullname < b.fullname) true; else false)
   }
+
+  override def deleteUser(id: Int): Unit ={
+    collection.findAndRemove(MongoDBObject("_id" -> id))
+  }
 }
 
 

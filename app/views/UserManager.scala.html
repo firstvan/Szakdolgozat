@@ -29,7 +29,15 @@
                     <td>@{user._id}</td>
                     <td>@{user.username}</td>
                     <td>@{user.fullname}</td>
-                    <td><span class="glyphicon glyphicon-remove" style="color: red;"></span></td>
+                    <td><span class="glyphicon glyphicon-remove" style="color: red;" onclick="removeCustomer(@{user._id})"></span></td>
+                    <div id="dialog_@{user._id}" title="Figyelem!" style="display: none;">
+                        Biztosan törli a(z) @{user.username} vásárlót?
+                        <br/>
+                        <br/>
+                        <button onclick="deleteItem(@{user._id})" style="float: left;">Törlés</button>
+                        <button onclick="closeDialog(@{user._id})" style="float: right;">Mégse</button>
+
+                    </div>
                 </tr>
             }
             </tbody>

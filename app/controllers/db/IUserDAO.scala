@@ -36,4 +36,6 @@ trait IUserDAO {
   def insertUser(usrname: String, fullname: String, pass: String, t: String): Boolean
 
   def getAllUser() : List[User]
+
+  def deleteUser(id: Int): Unit
 }

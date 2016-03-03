@@ -1,18 +1,9 @@
-.accountcontainer {
-  width: 60%;
-  text-align: center;
-}
-
 .accountcontainerform {
   margin: 10% auto;
 }
 
 body {
   background: #FFFFFF;
-}
-
-.accountcontainer > .loginbutton {
-  text-align: right;
 }
 
 .noneclickable{
@@ -41,7 +32,7 @@ body {
   margin-top: 60px;
 }
 
-@media screen and (min-width: 480px) {
+@media screen and (min-width: 320px) {
     .basicform {
         width: 100%;
         margin: 0 auto;
@@ -54,6 +45,28 @@ body {
     .search_closed {
         width: 100%;
         padding-bottom: 10px;
+    }
+
+    .basicsetting{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .accountcontainer {
+        width: 90%;
+        text-align: center;
+    }
+
+    .loginButton {
+        width: 90%;
+    }
+
+    .table_left {
+        width: 10%;
+    }
+
+    .table_right {
+        width: 90%;
     }
 }
 
@@ -75,6 +88,27 @@ body {
     .search_closed {
         width: 30%;
     }
+
+    .basicsetting{
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .accountcontainer {
+        width: 60%;
+        text-align: center;
+    }
+
+    .loginButton {
+        width: 70%;
+    }
+    .table_left {
+        width: 20%;
+    }
+
+    .table_right {
+        width: 80%;
+    }
 }
 
 @media screen and (min-width: 1080px) {
@@ -95,11 +129,28 @@ body {
         position: absolute;
         right: 0;"
     }
-}
 
-.basicsetting {
-    width: 80%;
-    margin: 0 auto;
+    .basicsetting{
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .accountcontainer {
+        width: 30%;
+        text-align: center;
+    }
+
+    .loginButton {
+        width: 60%;
+    }
+
+    .table_left {
+        width: 20%;
+    }
+
+    .table_right {
+        width: 80%;
+    }
 }
 
 .theadinverse{

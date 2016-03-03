@@ -68,4 +68,9 @@ class UserManager extends Controller with Secured {
 
     Ok(retid)
   }
+
+  def removeUser(id: Int) = withAuth { username => implicit request =>
+    val ret = UserDAO.deleteUser(id)
+    Ok("")
+  }
 }
