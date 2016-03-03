@@ -114,4 +114,27 @@ class CustomerManager extends Controller with Secured {
 
     Ok(views.html.addOrderUserTable(list))
   }
+
+  def getRequestCustomer = withAuth {username => implicit request =>
+    val customerList = CustomerDAO.getRequestCustomer
+
+    if(customerList.isEmpty)
+      Ok("")
+    else
+      Ok(views.html.CustomerRequestTable(customerList.get))
+  }
+
+  def deleteRequestCustomer(id: Int) = withAuth { username => implicit request =>
+
+    CustomerDAO.deleteRequest(id)
+
+    Ok("0")
+  }
+
+  def confirmRequestCustomer(id: Int) = withAuth { username => implicit request =>
+
+    CustomerDAO.confirmRequest(id)
+
+    Ok("0")
+  }
 }

@@ -248,4 +248,57 @@ object CustomerDAO extends ICustomerDAO{
 
     true
   }
+
+  /**
+    * Return all requested cusomer.
+    *
+    * @return
+    */
+  override def getRequestCustomer: Option[List[Customer]] = {
+    val list = collectionRequest.find()
+
+    if(list.isEmpty){
+      return None
+    }
+
+    val result = new ListBuffer[Customer]()
+
+    for(x <- list){
+      result += getCustomer(x)
+    }
+
+    val ret = result.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
+
+    Some(ret)
+  }
+
+  /**
+    * Delete request by id.
+    *
+    * @param id of request user.
+    * @return success
+    */
+  override def deleteRequest(id: Int): Boolean = {
+    collectionRequest.findAndRemove(MongoDBObject("_id" -> id))
+
+    true
+  }
+
+  /**
+    * Copy request to Customers table.
+    *
+    * @param id id of requested customer
+    * @return success
+    */
+  override def confirmRequest(id: Int): Boolean = {
+    val query = MongoDBObject("_id" -> id)
+    val userquery = collectionRequest.findOne(query)
+
+    val user = getCustomer(userquery.get)
+
+    insertCustomer(user.name, user.billing_address, user.p_type)
+
+    collectionRequest.findAndRemove(query)
+    true
+  }
 }

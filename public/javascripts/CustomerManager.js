@@ -4,11 +4,22 @@
 
 $(document).ready(function(){
   index();
+  requestIndex();
+  setInterval(function(){ requestIndex(); }, 60000);
 });
 
 function index() {
     $.get("/customerTable", function(data){
         $("#customer_table").empty().append(data);
+    });
+}
+
+function requestIndex(){
+    $.get("/requestCustomer", function(data){
+        if(data) {
+            $("#customer_request_container").css("display", "block");
+            $("#customer_requestTable").empty().append(data);
+        }
     });
 }
 

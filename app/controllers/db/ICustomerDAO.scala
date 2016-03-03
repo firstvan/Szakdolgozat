@@ -63,4 +63,24 @@ trait ICustomerDAO {
     * @return success
     */
   def insertRequest(name: String, add: String, payment: String): Boolean
+
+  /**
+    * Return all requested cusomer.
+    * @return
+    */
+  def getRequestCustomer : Option[List[Customer]]
+
+  /**
+    * Delete request by id.
+    * @param id of request user.
+    * @return success
+    */
+  def deleteRequest(id: Int): Boolean
+
+  /**
+    * Copy request to Customers table.
+    * @param id id of requested customer
+    * @return success
+    */
+  def confirmRequest(id: Int): Boolean
 }

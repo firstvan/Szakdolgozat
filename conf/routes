@@ -43,7 +43,9 @@ GET     /modifyProductForm          controllers.ProductManage.modifyIndex(id: In
 POST    /updateProduct              controllers.ProductManage.updateProduct
 GET     /getCustomersByName         controllers.CustomerManager.getCustomersByName(name: String)
 GET     /getCustomersByCode         controllers.CustomerManager.getCustomersByCode(code: String)
-
+GET     /requestCustomer            controllers.CustomerManager.getRequestCustomer
+GET     /deleteRequestCustomer      controllers.CustomerManager.deleteRequestCustomer(id: Int)
+GET     /confirmRequestCustomer     controllers.CustomerManager.confirmRequestCustomer(id: Int)
 GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path
