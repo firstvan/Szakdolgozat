@@ -63,33 +63,32 @@ class Main extends Controller with Secured{
     }
   }
 
-  def addorder = withAuth { username => implicit request =>
+  def addorder = withUser("Manager") { user => implicit request =>
     val custnames = CustomerDAO.getCustomers()
-    Ok(views.html.addorder(username, custnames))
+
+    Ok(views.html.addorder(user.username, custnames))
   }
 
 
-  def add = withAuth { username => implicit request =>
+  def add = withUser("Manager")  { user => implicit request =>
     val map: Map[String, Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())
 
     val code: Seq[String] = map.getOrElse("code", List[String]())
     val date: Seq[String] = map.getOrElse("date", List[String]())
 
-    val orderID = ActualOrderDAO.addNewOrder(username, code.head, date.head)
+    val orderID = ActualOrderDAO.addNewOrder(user.username, code.head, date.head)
 
-    val customername = CustomerDAO.getCustomerListByCode(code.head.toInt).head.name
-
-    Ok("/products").withCookies(new Cookie("customername", customername.replace(" ", "%"))
+    Ok("/products").withCookies(new Cookie("custcode", code.head)
       , new Cookie("orderid", orderID.toString))
   }
 
   def products = withAuth { username => implicit request =>
-    val cust_name = request.cookies.get("customername").get.value
-
-    Ok(views.html.products(username, cust_name.replace("%", " ")))
+    val cust_code = request.cookies.get("custcode").get.value
+    val cust_name = CustomerDAO.getCustomerListByCode(cust_code.toInt)
+    Ok(views.html.products(username, cust_name.head.name ))
   }
 
-  def adminIndex = withAuth { username => implicit request =>
+  def adminIndex = withUser("admin")  { username => implicit request =>
     val l = RegistrationDAO.getRegistrationByUser(0, OrderState.Open)
     if (l.isDefined) {
       val li = Main.tableLook(l.get)

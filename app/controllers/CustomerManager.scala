@@ -1,6 +1,6 @@
 package controllers
 
-import controllers.db.{UserDAO, ProductDAO, CustomerDAO}
+import controllers.db.{UserDAO, CustomerDAO}
 import model.Customer
 import play.api.mvc.Controller
 
@@ -8,9 +8,9 @@ import scala.collection.mutable.ListBuffer
 
 class CustomerManager extends Controller with Secured {
 
-  def index = withAuth { username => implicit request =>
+  def index = withUser("admin") { username => implicit request =>
     val list = getCustomList("", 1, 10)
-    Ok(views.html.CustomersManager(username, list._1))
+    Ok(views.html.CustomersManager(username.username, list._1))
   }
 
   def modifyCustomer(id: Int) = withAuth{ username => implicit request =>
@@ -23,9 +23,13 @@ class CustomerManager extends Controller with Secured {
         Ok(views.html.CustomerModify(username, null, tUser))
       }
     } else {
-      val cust = CustomerDAO.getCustomerById(id)
+      if(tUser) {
+        Redirect("/main")
+      } else {
+        val cust = CustomerDAO.getCustomerById(id)
 
-      Ok(views.html.CustomerModify(username, cust.get, manager = false))
+        Ok(views.html.CustomerModify(username, cust.get, manager = false))
+      }
     }
   }
 
@@ -53,7 +57,7 @@ class CustomerManager extends Controller with Secured {
     Ok(retid)
   }
 
-  def customerTable = withAuth {username => implicit request =>
+  def customerTable = withUser("admin") {username => implicit request =>
     val actual_page_cookie = request.cookies.get("actual_page")
     var actual_page = 1
     if (actual_page_cookie.isDefined) {
@@ -71,8 +75,7 @@ class CustomerManager extends Controller with Secured {
     Ok(views.html.CustomerTable(list._1, 10, actual_page, list._2))
   }
 
-  def deleteCustomer(id: Int) = withAuth { username => implicit request =>
-
+  def deleteCustomer(id: Int) = withUser("admin") { username => implicit request =>
     CustomerDAO.deleteCustomer(id)
 
     Ok("0")
@@ -98,13 +101,13 @@ class CustomerManager extends Controller with Secured {
     (p2.toList, custList.size)
   }
 
-  def getCustomersByName(name: String) = withAuth {username => implicit request =>
+  def getCustomersByName(name: String) = withUser("Manager") {username => implicit request =>
     val list = CustomerDAO.getCustomerList(name)
 
     Ok(views.html.addOrderUserTable(list))
   }
 
-  def getCustomersByCode(code: String) = withAuth {username => implicit request =>
+  def getCustomersByCode(code: String) = withUser("Manager") {username => implicit request =>
     var list :List[Customer] = null
     if(code.isEmpty){
       list = CustomerDAO.getCustomerList("")
@@ -115,7 +118,7 @@ class CustomerManager extends Controller with Secured {
     Ok(views.html.addOrderUserTable(list))
   }
 
-  def getRequestCustomer = withAuth {username => implicit request =>
+  def getRequestCustomer = withUser("admin") {username => implicit request =>
     val customerList = CustomerDAO.getRequestCustomer
 
     if(customerList.isEmpty)
@@ -124,14 +127,14 @@ class CustomerManager extends Controller with Secured {
       Ok(views.html.CustomerRequestTable(customerList.get))
   }
 
-  def deleteRequestCustomer(id: Int) = withAuth { username => implicit request =>
+  def deleteRequestCustomer(id: Int) = withUser("admin") { username => implicit request =>
 
     CustomerDAO.deleteRequest(id)
 
     Ok("0")
   }
 
-  def confirmRequestCustomer(id: Int) = withAuth { username => implicit request =>
+  def confirmRequestCustomer(id: Int) = withUser("admin") { username => implicit request =>
 
     CustomerDAO.confirmRequest(id)
 

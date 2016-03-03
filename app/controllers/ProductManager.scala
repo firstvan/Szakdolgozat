@@ -7,7 +7,7 @@ import play.api.mvc.Controller
 /**
   * Created by firstvan on 15/01/16.
   */
-class ProductManage extends Controller with Secured{
+class ProductManager extends Controller with Secured{
 
   /**
     * Gateway to jquery and database.
@@ -30,20 +30,19 @@ class ProductManage extends Controller with Secured{
     Ok("0")
   }
 
-  def index = withAuth { username => implicit request =>
-
-    Ok(views.html.ProductModify(username, closed = true))
+  def index = withUser("admin") { username => implicit request =>
+    Ok(views.html.ProductModify(username.username, closed = true))
   }
 
-  def modifyIndex(id: Int) = withAuth {username => implicit request =>
+  def modifyIndex(id: Int) = withUser("admin") {username => implicit request =>
     var product: model.Product = null
     if(id != 0){
       product = ProductDAO.getProductByItemNo(id.toString).get
     }
-    Ok(views.html.ProductModifyForm(username, product))
+    Ok(views.html.ProductModifyForm(username.username, product))
   }
 
-  def updateProduct = withAuth {username => implicit request =>
+  def updateProduct = withUser("admin") {username => implicit request =>
     var ok = 0
 
     val map : Map[String,Seq[String]] = request.body.asFormUrlEncoded.getOrElse(Map())

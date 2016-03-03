@@ -1,52 +1,66 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
-# Home page
+# Application
 GET     /                           controllers.Application.index
+
+# Login
 POST    /                           controllers.Login.login
-GET     /main                       controllers.Main.index
 GET     /logout                     controllers.Login.logout
+GET     /register                   controllers.Login.register
+
+# Main
+GET     /main                       controllers.Main.index
 GET     /addorder                   controllers.Main.addorder
 POST    /addorder                   controllers.Main.add
 GET     /products                   controllers.Main.products
-GET     /additem                    controllers.ProductManage.addProduct(itemNo :String, piece :Int, price :Int)
+GET     /getAdminOpens              controllers.Main.adminIndex
+
+#ProductManager
+GET     /additem                    controllers.ProductManager.addProduct(itemNo :String, piece :Int, price :Int)
+GET     /modifyProductForm          controllers.ProductManager.modifyIndex(id: Int)
+POST    /updateProduct              controllers.ProductManager.updateProduct
+GET     /productModify              controllers.ProductManager.index
+
+#OpenOrders
 GET     /orders                     controllers.OpenOrders.getInfromation(id: Int)
-GET     /closedOrder                controllers.ClosedOrders.getInfromation(id: Int)
-GET     /register                   controllers.Login.register
-GET     /pagination                 controllers.Pagination.index(orderd: Boolean, admin: Boolean = false, closed: Boolean = false, modify: Boolean = false)
-GET     /deleteItem                 controllers.Pagination.deleteItem(prodNo: String)
 GET     /deleteOrder                controllers.OpenOrders.deleteOrder(id: Int)
 GET     /gettotal                   controllers.OpenOrders.getTotal
 GET     /getDTotal                  controllers.OpenOrders.getDTotal
 GET     /updatetime                 controllers.OpenOrders.updateTime(time: String)
-GET     /getAdminOpens              controllers.Main.adminIndex
 GET     /closeOrder                 controllers.OpenOrders.closeOrder(id: Int)
 GET     /ordertoclose               controllers.OpenOrders.orderToClose(id: Int)
-GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean, admin: Boolean, closed: Boolean, modify: Boolean = false)
 GET     /updateCloseProd            controllers.OpenOrders.closeItem(id: String, db: Int)
+
+#ClosedOrders
+GET     /closedOrder                controllers.ClosedOrders.getInfromation(id: Int)
+GET     /closedOrders               controllers.ClosedOrders.index(all: Boolean)
+GET     /closedOrdersDate           controllers.ClosedOrders.getTable
+
+#Pagination
+GET     /pagination                 controllers.Pagination.index(orderd: Boolean, admin: Boolean = false, closed: Boolean = false, modify: Boolean = false)
+GET     /deleteItem                 controllers.Pagination.deleteItem(prodNo: String)
+GET     /paginationAdmin            controllers.Pagination.index(orderd: Boolean, admin: Boolean, closed: Boolean, modify: Boolean = false)
+GET     /pagingModify               controllers.Pagination.index(orderd: Boolean = false, admin: Boolean = false, closed: Boolean = false, modify: Boolean = true)
+
+#UserManager
 GET     /users                      controllers.UserManager.index
 GET     /modifyUser                 controllers.UserManager.modifyUser(id: Int)
 GET     /modifyAccount              controllers.UserManager.modifyAccount
 POST    /saveUser                   controllers.UserManager.saveUser
+GET     /removeUser                 controllers.UserManager.removeUser(id: Int)
+
+#CustomerManager
 GET     /customers                  controllers.CustomerManager.index
 GET     /modifyCustomer             controllers.CustomerManager.modifyCustomer(id: Int)
 POST    /saveCustomer               controllers.CustomerManager.saveCustomer
 GET     /customerTable              controllers.CustomerManager.customerTable
 GET     /removeCustomer             controllers.CustomerManager.deleteCustomer(id: Int)
-GET     /removeUser                 controllers.UserManager.removeUser(id: Int)
-GET     /closedOrders               controllers.ClosedOrders.index(all: Boolean)
-GET     /closedOrdersDate           controllers.ClosedOrders.getTable
-GET     /productModify              controllers.ProductManage.index
-GET     /pagingModify               controllers.Pagination.index(orderd: Boolean = false, admin: Boolean = false, closed: Boolean = false, modify: Boolean = true)
-GET     /modifyProductForm          controllers.ProductManage.modifyIndex(id: Int)
-POST    /updateProduct              controllers.ProductManage.updateProduct
 GET     /getCustomersByName         controllers.CustomerManager.getCustomersByName(name: String)
 GET     /getCustomersByCode         controllers.CustomerManager.getCustomersByCode(code: String)
 GET     /requestCustomer            controllers.CustomerManager.getRequestCustomer
 GET     /deleteRequestCustomer      controllers.CustomerManager.deleteRequestCustomer(id: Int)
 GET     /confirmRequestCustomer     controllers.CustomerManager.confirmRequestCustomer(id: Int)
-GET     /test                       controllers.Pagination.test
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -124,7 +124,7 @@ class Pagination extends Controller with Secured {
     p2.toList
   }
 
-  def deleteItem(prodNo: String) = withAuth{username=> implicit request =>
+  def deleteItem(prodNo: String) = withUser("Manager"){username=> implicit request =>
     var order_id = 0
     val order_id_cookie = request.cookies.get("orderid")
 

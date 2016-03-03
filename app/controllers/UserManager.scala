@@ -9,19 +9,19 @@ import com.github.t3hnar.bcrypt._
   */
 class UserManager extends Controller with Secured {
 
-  def index = withAuth { username => implicit request =>
+  def index = withUser("admin") { username => implicit request =>
     val list = UserDAO.getAllUser()
 
-    Ok(views.html.UserManager(username, list))
+    Ok(views.html.UserManager(username.username, list))
   }
 
-  def modifyUser(id: Int) = withAuth { username => implicit request =>
+  def modifyUser(id: Int) = withUser("admin") { username => implicit request =>
     if(id == 0){
-      Ok(views.html.UserModify(username, null))
+      Ok(views.html.UserModify(username.username, null))
     } else {
       val user = UserDAO.getUserByUserID(id)
 
-      Ok(views.html.UserModify(username, user.get))
+      Ok(views.html.UserModify(username.username, user.get))
     }
   }
 
@@ -69,7 +69,7 @@ class UserManager extends Controller with Secured {
     Ok(retid)
   }
 
-  def removeUser(id: Int) = withAuth { username => implicit request =>
+  def removeUser(id: Int) = withUser("admin") { username => implicit request =>
     val ret = UserDAO.deleteUser(id)
     Ok("")
   }

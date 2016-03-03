@@ -13,12 +13,17 @@ class OpenOrders extends Controller with Secured{
     val f = DateTimeFormat.forPattern("yyyy.MM.dd")
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
-    Ok(views.html.openinform(username, order, cust.get.name, date, delevery)).withCookies(new Cookie("orderid", id.toString))
+    if(username.equals("admin") || order.sales_man_id==UserDAO.getUserByUserName(username).get._id )
+      Ok(views.html.openinform(username, order, cust.get.name, date, delevery)).withCookies(new Cookie("orderid", id.toString))
+    else
+      Redirect("/main")
   }
 
   def deleteOrder(id: Int) = withAuth { username => implicit request =>
-    ActualOrderDAO.deleteOrder(id)
-    Ok("1")
+    val order = RegistrationDAO.getOrderById(id)
+    if(username.equals("admin") || order.sales_man_id==UserDAO.getUserByUserName(username).get._id )
+        ActualOrderDAO.deleteOrder(id)
+    Ok("0")
   }
 
   def getTotal = withAuth { username => implicit request =>
@@ -34,7 +39,7 @@ class OpenOrders extends Controller with Secured{
     Ok(total.toString)
   }
 
-  def updateTime(time: String) = withAuth { username => implicit request =>
+  def updateTime(time: String) = withUser("Manager") { username => implicit request =>
     var order_id = 0
     val order_id_cookie = request.cookies.get("orderid")
 
@@ -53,9 +58,8 @@ class OpenOrders extends Controller with Secured{
     * @param id order_id
     * @return success
     */
-  def closeOrder(id: Int) = withAuth { username => implicit  request =>
+  def closeOrder(id: Int) = withUser("admin") { username => implicit  request =>
       val res = ActualOrderDAO.closeOrder(id: Int)
-    println(res.toString)
       Ok(res.toString)
   }
 
@@ -65,14 +69,14 @@ class OpenOrders extends Controller with Secured{
     * @param id Order id
     * @return
     */
-  def orderToClose(id: Int) = withAuth { username => implicit request =>
+  def orderToClose(id: Int) = withUser("admin") { username => implicit request =>
     val order = RegistrationDAO.getOrderById(id)
     val cust = CustomerDAO.getCustomerById(order.customer)
     val f = DateTimeFormat.forPattern("yyyy.MM.dd")
     val date  = f.print(order.date_of_take)
     val delevery = f.print(order.delivery_date)
     val ktar = UserDAO.getUserByUserID(order.sales_man_id)
-    Ok(views.html.adminProducts(username, order, cust.get.name, date, delevery, ktar.get.fullname, false)).withCookies(new Cookie("orderid", id.toString))
+    Ok(views.html.adminProducts(username.username, order, cust.get.name, date, delevery, ktar.get.fullname, closed = false)).withCookies(new Cookie("orderid", id.toString))
   }
 
   /**
@@ -82,7 +86,7 @@ class OpenOrders extends Controller with Secured{
     * @param db orderd product
     * @return success
     */
-  def closeItem(id: String, db: Int) = withAuth { username => implicit request =>
+  def closeItem(id: String, db: Int) = withUser("admin") { username => implicit request =>
     var order_id = 0
     val order_id_cookie = request.cookies.get("orderid")
 
