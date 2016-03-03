@@ -54,4 +54,13 @@ trait ICustomerDAO {
     * @return
     */
   def getCustomerListByCode(code: Int) : List[Customer]
+
+  /**
+    * Insert a new customer to request table.
+    * @param name name of customer
+    * @param add address of customer
+    * @param payment payment of customer
+    * @return success
+    */
+  def insertRequest(name: String, add: String, payment: String): Boolean
 }

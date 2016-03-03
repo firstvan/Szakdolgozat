@@ -1,6 +1,6 @@
 package controllers.db
 
-import com.mongodb.casbah.commons.MongoDBObject
+import com.mongodb.casbah.commons.{TypeImports, MongoDBObject}
 import model.Customer
 import com.mongodb.casbah.Imports._
 
@@ -8,6 +8,7 @@ import scala.collection.mutable.ListBuffer
 
 object CustomerDAO extends ICustomerDAO{
   val collection = DBFactory.getCollection("customers")
+  val collectionRequest = DBFactory.getCollection("request")
 
   override def getCustomerById(id: Int): Option[Customer] = {
     val cust = collection.findOne(MongoDBObject("_id" -> id))
@@ -143,12 +144,17 @@ object CustomerDAO extends ICustomerDAO{
     *
     * @return Int of max id
     */
-  private def getIdNum(): Int = {
+  private def getIdNum(requestTable: Boolean = false): Int = {
     val query = MongoDBObject() // All documents
     val fields = MongoDBObject("_id" -> 1) // Only return `_id`
     val orderBy = MongoDBObject("_id" -> -1) // Order by _id descending
+    var item : Option[TypeImports.DBObject] = None
 
-    val item = collection.findOne(query, fields, orderBy)
+    if(requestTable){
+      item = collectionRequest findOne(query, fields, orderBy)
+    } else {
+      item = collection findOne(query, fields, orderBy)
+    }
 
     if(item.isEmpty){
       return 0
@@ -214,5 +220,32 @@ object CustomerDAO extends ICustomerDAO{
     }
 
     result.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
+  }
+
+  /**
+    * Insert a new customer to request table.
+    *
+    * @param name    name of customer
+    * @param add     address of customer
+    * @param payment payment of customer
+    * @return success
+    */
+  override def insertRequest(name: String, add: String, payment: String): Boolean = {
+
+    val id = getIdNum(true)
+
+    val newCustomer = MongoDBObject (
+      "_id" -> id,
+      "code" -> 0,
+      "name" -> name,
+      "lowerName" -> name.toLowerCase,
+      "billing_name" -> name,
+      "p_type" -> payment,
+      "billing_address" -> add
+    )
+
+    collectionRequest.insert(newCustomer)
+
+    true
   }
 }

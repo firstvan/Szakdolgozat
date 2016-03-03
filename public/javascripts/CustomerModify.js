@@ -18,5 +18,14 @@ function save_cust(id) {
 }
 
 function successfnc(data) {
-   window.location.replace("/customers")
+    if(data === "200"){
+        $("#saveb").addClass("disabled");
+        var delay = 5000; //Your delay in milliseconds
+
+        setTimeout(function(){ window.location = "/main"; }, delay);
+
+        $("#success_dialog").css("display", "block");
+    } else {
+        window.location.replace("/customers")
+    }
 }

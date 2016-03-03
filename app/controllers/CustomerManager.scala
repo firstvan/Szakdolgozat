@@ -18,7 +18,7 @@ class CustomerManager extends Controller with Secured {
 
     if(id == 0){
       if(tUser) {
-        Ok(views.html.CustomerModify(username, null, tUser, 10))
+        Ok(views.html.CustomerModify(username, null, tUser, 2))
       } else {
         Ok(views.html.CustomerModify(username, null, tUser))
       }
@@ -37,11 +37,15 @@ class CustomerManager extends Controller with Secured {
     val addr: Seq[String] = map.getOrElse("addr", List[String]())
     val payment: Seq[String] = map.getOrElse("payment", List[String]())
     var retid = id.head
+
     if(id.head.toInt == 0) {
       val succ = CustomerDAO.insertCustomer(name.head, addr.head, payment.head)
       if(!succ){
         retid = "-1"
       }
+    } else if(id.head.toInt == -1) {
+      val succ = CustomerDAO.insertRequest(name.head, addr.head, payment.head)
+      retid = "200"
     } else {
         CustomerDAO.saveCustomer(id.head.toInt, name.head, addr.head, payment.head)
     }

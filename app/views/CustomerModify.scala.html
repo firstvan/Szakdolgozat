@@ -52,11 +52,16 @@
         <br/>
         <div>
         @if(cust != null) {
-            <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(@{cust._id})">Mentés</button>
+            <button id="saveb" class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(@{cust._id})">Mentés</button>
         } else {
-            <button class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(0)">Mentés</button>
+            @if(!manager) {
+                <button id="saveb" class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(0)">Mentés</button>
+            } else {
+                <button id="saveb" class="btn btn-primary" style="width: 100% ; height: 50px ;" onclick="save_cust(-1)">Mentés</button>
+            }
         }
         </div>
-        <div id="alert_dialog" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Válaszzon fizetési módot!</div>
+        <div id="alert_dialog" class="alert alert-danger" style="margin: 30px auto; display: None;" role="alert">Válasszon fizetési módot!</div>
+        <div id="success_dialog" class="alert alert-success" style="margin: 30px auto; display: None;" role="alert">Kérelem elküldve! <br/> 5 másodperc mulva átíránítunk a főoldalra.</div>
     </div>
 }
