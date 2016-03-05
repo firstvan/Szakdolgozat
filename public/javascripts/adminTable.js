@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 
 function deleteItem(itemno){
     $.get("/deleteOrder?id="+itemno, function(data){
-        location.reload();
+        loadTable();
     });
     $("#dialog_"+itemno).dialog("close");
 }

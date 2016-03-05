@@ -21,8 +21,9 @@ class OpenOrders extends Controller with Secured{
 
   def deleteOrder(id: Int) = withAuth { username => implicit request =>
     val order = RegistrationDAO.getOrderById(id)
-    if(username.equals("admin") || order.sales_man_id==UserDAO.getUserByUserName(username).get._id )
-        ActualOrderDAO.deleteOrder(id)
+    if(username.equals("admin") || order.sales_man_id==UserDAO.getUserByUserName(username).get._id ) {
+      ActualOrderDAO.deleteOrder(id)
+    }
     Ok("0")
   }
 
