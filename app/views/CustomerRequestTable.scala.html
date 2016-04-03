@@ -2,15 +2,6 @@
 @(list: List[Customer])
 
 <script type="text/javascript">
-        jQuery(document).ready(function($) {
-            $("#customers-table").find("tr").each(function(i, e){
-                $(e).children('td:not(:nth-last-child(-n+2))').click(function()
-                {
-                    window.document.location = $(this).closest("tr").data("href");
-                });
-            });
-        });
-
         function deleteRequestItem(id){
             $.get("/deleteRequestCustomer?id="+id, function(data){
                location.reload();
@@ -50,7 +41,7 @@
     </thead>
     <tbody>
         @for(cust <- list) {
-            <tr class="clickable-row" data-href="listcustomer?id=@cust._id">
+            <tr>
                 <td>@{cust._id + 1}</td>
                 <td>@{cust.name}</td>
                 <td>@{cust.billing_address}</td>
@@ -78,32 +69,3 @@
     </tbody>
 </table>
 
-@for(cust <- list) {
-    <div class="modal fade" id="modal_@{cust._id}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h2 class="modal-title itemModalTitle">
-                    @{
-                        cust.name
-                    }
-                    </h2>
-                </div>
-                <div class="modal-body">
-                    <table class="itemDescriptionTable">
-                        <tr>
-                            <td>Id:</td> <td>@{cust._id} FT</td>
-                        </tr>
-                        <tr>
-                            <td>Vásárló neve:</td> <td>@{cust.name}</td>
-                        </tr>
-                        <tr>
-                            <td>Szállítási cím:</td> <td>@{cust.billing_address}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-}
