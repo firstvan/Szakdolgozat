@@ -110,14 +110,14 @@ object ActualOrderDAO extends IActualOrderDAO{
     val productsObj = collectionItems.find(MongoDBObject("order_id" -> actualOrder))
 
     for(x <- productsObj){
-      val prod = getProduct(x)
+      val prod = getActualOrder(x)
       retDict += (prod.product_number -> prod.ordered_piece)
     }
 
     retDict
   }
 
-  private def getProduct(item: ActualOrderDAO.this.collectionItems.T) : OrderedItem = {
+  private def getActualOrder(item: ActualOrderDAO.this.collectionItems.T) : OrderedItem = {
     new OrderedItem(item.getAs[Int]("_id").get,
       item.getAs[Int]("order_id").get,
       item.getAs[String]("product_number").get,
@@ -278,7 +278,7 @@ object ActualOrderDAO extends IActualOrderDAO{
 
 
     for(x <- productsObj){
-      val prod = getProduct(x)
+      val prod = getActualOrder(x)
       retDict += (prod.product_number -> (prod.ordered_piece, prod.delivered))
     }
     retDict
