@@ -33,6 +33,28 @@ object ProductDAO extends IProductDAO {
     return_list.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
   }
 
+   /**
+    * This method return a list which size is in size argument, and start from start argument, and contains only
+    * products which starts with name argument.
+    *
+    * @param name
+    * @param start
+    * @param size
+    * @return
+    */
+  override def getElementByName(name: String, start: Int, size: Int): List[Product] = {
+     val nameWithRegex = "^" + name.toLowerCase() + ".*"
+
+     val productsObj = collection.find(MongoDBObject("lowerName" -> nameWithRegex.r)).skip(start).limit(size)
+     val return_list = new ListBuffer[Product]()
+
+     for (x <- productsObj) {
+       return_list += getProduct(x)
+     }
+
+     return_list.toList.sortWith((a, b) => if (a.name < b.name) true; else false)
+  }
+
   private def getProduct(item: ProductDAO.this.collection.T): Product = {
     new Product(item.getAs[String]("productnumber").get,
       item.getAs[String]("name").get,
@@ -131,4 +153,6 @@ object ProductDAO extends IProductDAO {
 
     result.toList
   }
+
+
 }

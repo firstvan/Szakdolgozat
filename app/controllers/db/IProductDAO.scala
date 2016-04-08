@@ -8,6 +8,16 @@ trait IProductDAO {
   def getElementByName(name: String) : List[Product]
 
   /**
+    * This method return a list which size is in size argument, and start from start argument, and contains only
+    * products which starts with name argument.
+    * @param name
+    * @param start
+    * @param size
+    * @return
+    */
+  def getElementByName(name: String, start: Int, size: Int) : List[Product]
+
+  /**
     * Update stock of product.
     * @param productNumber
     * @param piece

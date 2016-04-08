@@ -74,11 +74,12 @@ class Pagination extends Controller with Secured {
 
   def getList(name: String, size: Int, start: Int):
   (List[Product], Int) = {
-    var p2 = new ListBuffer[model.Product]()
 
     val products = ProductDAO.getElementByName(name)
 
-    var counter = (start - 1) * size
+    val p2 = ProductDAO.getElementByName(name, (start - 1) * size, size)
+
+    /*var counter = (start - 1) * size
     var max = counter + size
 
     if (max > products.size) {
@@ -88,9 +89,9 @@ class Pagination extends Controller with Secured {
     while (counter < max) {
       p2 += products(counter)
       counter += 1
-    }
+    }*/
 
-    (p2.toList, products.size)
+    (p2, products.size)
   }
 
   def getListOrderd(name:String, size: Int, start: Int, order_id: Int): (List[Product], Int)  ={
